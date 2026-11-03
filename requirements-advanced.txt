@@ -1,0 +1,5 @@
+-r requirements.txt
+trl>=0.29.0
+math-verify==0.5.2
+latex2sympy2_extended
+bitsandbytes

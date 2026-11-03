@@ -1,0 +1,16 @@
+{
+  "train": {
+    "before": 1000,
+    "after": 1000,
+    "longest": 182,
+    "p95": 122
+  },
+  "valid": {
+    "before": 100,
+    "after": 100,
+    "longest": 129,
+    "p95": 123
+  },
+  "model": "models/qwen-0.5b",
+  "max_length": 256
+}

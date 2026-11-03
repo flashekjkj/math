@@ -1,0 +1,24 @@
+{
+  "model": "models/qwen-0.5b",
+  "adapter": null,
+  "data": "data/processed/test.jsonl",
+  "data_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "max_new_tokens": 192,
+  "do_sample": false,
+  "n": 200,
+  "numeric_accuracy": 0.115,
+  "parse_rate": 0.74,
+  "note": "numeric_accuracy是全体样本上自动确认正确比例；未解析/冲突/多问不是已确认数学错误。judged_numeric_accuracy仅为已判定子集的辅助指标，必须同时查看coverage。只评价数值，不验证单位、推导或教学质量。",
+  "scorer_version": "numeric-v2",
+  "status_counts": {
+    "correct": 23,
+    "conflict": 43,
+    "incorrect": 123,
+    "unparsed": 8,
+    "needs_review": 3
+  },
+  "judged_numeric_accuracy": 0.15753424657534246,
+  "judged_count": 146,
+  "coverage": 0.73,
+  "system_prompt": "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。"
+}

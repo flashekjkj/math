@@ -1,0 +1,32 @@
+# Python and local tooling
+__pycache__/
+*.py[cod]
+.cache/
+.vscode/
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Downloaded models and training checkpoints
+/models/
+/runs/
+
+# Reproducible datasets (keep audit reports)
+/data/*
+!/data/quality_report.json
+!/data/length_report.json
+
+# Keep aggregate metrics; exclude per-question generated outputs
+/results/*
+!/results/*.summary.json
+
+# Local backups
+/archive/

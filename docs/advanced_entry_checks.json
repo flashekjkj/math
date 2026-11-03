@@ -1,0 +1,30 @@
+{
+  "dpo_training": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "grpo_training": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "orpo_training": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "pretraining": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "reward_modeling": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "ppo_training": {
+    "help_exit": 0,
+    "error_tail": ""
+  },
+  "opd_training": {
+    "help_exit": 0,
+    "error_tail": ""
+  }
+}

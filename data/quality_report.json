@@ -1,0 +1,13 @@
+{
+  "clean_source_train": 21427,
+  "clean_source_test": 973,
+  "rejected": 762,
+  "duplicate_families_removed": 1081,
+  "seed": 42,
+  "splits": {
+    "train": 1000,
+    "valid": 100,
+    "test": 200
+  },
+  "warning": "仅验证表达式与答案一致；没有证明表达式符合题意。需人工抽检。"
+}

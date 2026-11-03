@@ -1,0 +1,126 @@
+{
+    "source_url":  "https://github.com/shibing624/MedicalGPT",
+    "recorded_commit":  "ef9985ab9a8b26c3b3647d60dc8f51fd41a15229",
+    "notice":  "Copied from local working tree; source hashes also capture local changes.",
+    "files":  [
+                  {
+                      "source":  "training/dpo_training.py",
+                      "destination":  "math_tutor/training/dpo_training.py",
+                      "source_sha256":  "29e8070776a0d8e5a756a19d19662b8713b6cb4bb67d4b9d58d9f09e8ebca1e7",
+                      "local_sha256":  "edae08a3dc909d13bc3c32f658b20883544c4a0dc28e423c2fb5851b0c9ab3f2",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved.; \u003c=1 DPO preprocessing worker executes in-process."
+                  },
+                  {
+                      "source":  "training/grpo_training.py",
+                      "destination":  "math_tutor/training/grpo_training.py",
+                      "source_sha256":  "e84e0f68b9b7a57374249d4b7113466618fd126666c6ec6333fe208f0c0b93c6",
+                      "local_sha256":  "45ed501629c20b765be552a753a4a8956a03096466084fd220a99faa9e1917f7",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/opd_training.py",
+                      "destination":  "math_tutor/training/opd_training.py",
+                      "source_sha256":  "7f6c65b780ff7aeb4ddea7cab8082c0121a980cc3d74d79d7b548d36415d31ff",
+                      "local_sha256":  "d27dd2ce9efb866e23cb547bbef21593679511d9e5e43549276f86cfcfc45948",
+                      "adaptation":  "Project-qualified imports; renamed model_trust_remote_code to avoid collision with current TRL GKDConfig."
+                  },
+                  {
+                      "source":  "training/orpo_training.py",
+                      "destination":  "math_tutor/training/orpo_training.py",
+                      "source_sha256":  "16c9b4af55596b25145b8069ecfa159995cee5608fc219f99e8a1f44ca83e185",
+                      "local_sha256":  "a827d783f366a43dc0a46ac6574644cbe1a0ab6da64124caec8507c7ed0cbbd0",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/ppo_training.py",
+                      "destination":  "math_tutor/training/ppo_training.py",
+                      "source_sha256":  "9d73d6325360c08616a1307a23e3e728716ca385f138a62c7d183860db9b4e5b",
+                      "local_sha256":  "0882a409bf570d1c77ba82fc7d914c37862bc9e5b194f5e67ae31b87c53206f0",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/pretraining.py",
+                      "destination":  "math_tutor/training/pretraining.py",
+                      "source_sha256":  "92900d51b4d3d3889361741cd20e2e23f634aa4a8bc8f513108b4c9b3caf4996",
+                      "local_sha256":  "04ae67a0fa205f4b949c333c33becdfbb05e49a264c236a667133b2aedf9d593",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/reward_modeling.py",
+                      "destination":  "math_tutor/training/reward_modeling.py",
+                      "source_sha256":  "c36583727dcc625c2cb918d7a62aeeec44fb20e2c585d6ea5a1b96c5bd390d7b",
+                      "local_sha256":  "a16de923b574d4188b4841643f982b8f5f03cac5b26e83b59509a70f05630c50",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/supervised_finetuning.py",
+                      "destination":  "math_tutor/training/supervised_finetuning.py",
+                      "source_sha256":  "8f012940245bc52c1f6344d050c3a16923c8eb7ce0bf62928f9843a9ccf81423",
+                      "local_sha256":  "b1ebf03c386933ee914f88ff368257afc390c06c0c4d8ef6136062f11fdb6490",
+                      "adaptation":  "Project-qualified imports; \u003c=1 preprocessing workers uses in-process datasets map/filter."
+                  },
+                  {
+                      "source":  "training/template.py",
+                      "destination":  "math_tutor/training/template.py",
+                      "source_sha256":  "094d7149bf8d099201b3e7db33b14149017e6727cb76c59e7d034dc3180657d4",
+                      "local_sha256":  "4ad95d04c2d6de3cacd6b1b21e559e0862d557506701b16f92c403e422970e22",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "training/tool_utils.py",
+                      "destination":  "math_tutor/training/tool_utils.py",
+                      "source_sha256":  "7591ef13b3d96012d6c93e152dff2e862964e7f419ff560b2fdf2a69bb9d7f01",
+                      "local_sha256":  "9c019c17a709956628ed237d8f9b8cb2052c94577fbea3a59c6926e6ae98505d",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/build_domain_tokenizer.py",
+                      "destination":  "math_tutor/tools/build_domain_tokenizer.py",
+                      "source_sha256":  "a56837f37ec1c2ed18c68c97cbcab5c09e12a21043f399d371e85ce20d695d6a",
+                      "local_sha256":  "bd0f75ed70e45d3e78fe0b5473eb9df6e5de9a843218765b6b3018ec4ffa9209",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/convert_dataset.py",
+                      "destination":  "math_tutor/tools/convert_dataset.py",
+                      "source_sha256":  "a8d5cc29f44e41d9abf409871056fc313076ccd9efd7dc4475a213e2801ae2b5",
+                      "local_sha256":  "a0163acccda4a1a4e8d6996427988799a34180c1407d226028120734267e487d",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/eval_quantize.py",
+                      "destination":  "math_tutor/tools/eval_quantize.py",
+                      "source_sha256":  "2aaf3da9e22041d3fe4c96e39ca6961085a840a9e001a21e71a50d507d40613e",
+                      "local_sha256":  "3efd4ee7439dc30b4bafa17e6aa7fc0a39546d0ac5a7de773357bc4527e5ffae",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/merge_peft_adapter.py",
+                      "destination":  "math_tutor/tools/merge_peft_adapter.py",
+                      "source_sha256":  "e92e875c148926d412501edc53bde1984fd4285b063beeb38558fd68fe5632ed",
+                      "local_sha256":  "9aeef886cda3adb196fa2c21db10a0e8b4444486b68d68989f8283416cdd3d38",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/merge_tokenizers.py",
+                      "destination":  "math_tutor/tools/merge_tokenizers.py",
+                      "source_sha256":  "fa81c2f670dddb857593f70b5ec2af27d5a53f7238cbab36ed499d61458a7910",
+                      "local_sha256":  "8c6bb4b11537d869c80b4febdbc2c4fa1eec71a604693c95ebde16b59a06f24e",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/model_quant.py",
+                      "destination":  "math_tutor/tools/model_quant.py",
+                      "source_sha256":  "56221bf2846bbd6d0336119235cd97fdefebcb92d97befad5e92a27d8bd3bbd9",
+                      "local_sha256":  "6b870fafaedd7e6bd23cea08fad1ce75720999c4299db246df3f2efcae7742a0",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  },
+                  {
+                      "source":  "tools/validate_jsonl.py",
+                      "destination":  "math_tutor/tools/validate_jsonl.py",
+                      "source_sha256":  "14f08852bd09791587cec3c4fc12cdb24bf3a4966404e1800e567fbfe88f9643",
+                      "local_sha256":  "0cede943c74b35b237ba18ae9c4bb063474d0cfe35d92161230380e3df1727f8",
+                      "adaptation":  "Project-qualified imports and attribution header; algorithm preserved."
+                  }
+              ]
+}
