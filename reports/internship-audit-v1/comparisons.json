@@ -1,0 +1,26 @@
+{
+  "base-test__sft-test": {
+    "neither_confirmed_correct": 143,
+    "response_changed": 200,
+    "both_confirmed_correct": 14,
+    "gained_confirmed_correct": 34,
+    "lost_confirmed_correct": 9,
+    "n": 200,
+    "accuracy_delta_pp": 12.5
+  },
+  "sft-valid__merged-sft-valid": {
+    "neither_confirmed_correct": 82,
+    "both_confirmed_correct": 17,
+    "response_changed": 8,
+    "gained_confirmed_correct": 1,
+    "n": 100,
+    "accuracy_delta_pp": 1.0
+  },
+  "merged-sft-valid__dpo-demo-valid": {
+    "neither_confirmed_correct": 82,
+    "both_confirmed_correct": 18,
+    "response_changed": 6,
+    "n": 100,
+    "accuracy_delta_pp": 0.0
+  }
+}

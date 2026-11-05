@@ -6,6 +6,8 @@ from math_tutor.utils.environment import check
 from math_tutor.training.launcher import launch
 from math_tutor.inference.runtime import chat
 from math_tutor.evaluation.runner import evaluate, rescore
+from math_tutor.serve.api import serve
+from math_tutor.serve.benchmark import benchmark
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -48,6 +50,21 @@ def main():
     p.add_argument("--input", required=True)
     p.add_argument("--output", required=True)
     p.set_defaults(func=rescore)
+    p = sub.add_parser("serve", help="启动网页演示与 OpenAI 兼容推理服务")
+    p.add_argument("--model", default="models/math-sft-0.5b")
+    p.add_argument("--adapter")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--max-new-tokens", type=int, default=512)
+    p.set_defaults(func=serve)
+    p = sub.add_parser("benchmark", help="推理基准：加载耗时、显存、首字延迟、tokens/s")
+    p.add_argument("--model", default="models/math-sft-0.5b")
+    p.add_argument("--adapter")
+    p.add_argument("--runs", type=int, default=3)
+    p.add_argument("--max-new-tokens", type=int, default=128)
+    p.add_argument("--prompt", default="工厂生产了1015筒毛球，每筒6个。一共生产了多少个羽毛球？")
+    p.add_argument("--output", default="results/benchmark-math-sft.json")
+    p.set_defaults(func=benchmark)
     args = parser.parse_args()
     args.func(args)
 

@@ -1,0 +1,4 @@
+# 部署/演示依赖（在训练环境基础上附加安装）：
+#   python -m pip install -r requirements-serve.txt
+fastapi
+uvicorn

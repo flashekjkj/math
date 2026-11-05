@@ -1,0 +1,26 @@
+{
+  "splits": {
+    "train": {
+      "count": 1000,
+      "duplicate_ids": 0,
+      "duplicate_families": 0
+    },
+    "valid": {
+      "count": 100,
+      "duplicate_ids": 0,
+      "duplicate_families": 0
+    },
+    "test": {
+      "count": 200,
+      "duplicate_ids": 0,
+      "duplicate_families": 0
+    }
+  },
+  "family_overlap": {
+    "train__valid": 0,
+    "train__test": 0,
+    "valid__test": 0
+  },
+  "passed": true,
+  "limitation": "Family checks are heuristic; semantic duplicates and question correctness need human review."
+}

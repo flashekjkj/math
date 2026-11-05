@@ -5,6 +5,8 @@
 - [第一轮实验评估](docs/实验评估.md)
 - [文件结构与学习顺序](docs/项目结构.md)
 - [后续训练逐步命令](docs/后续训练步骤.md)
+- [部署与网页演示](docs/部署使用.md)
+- 部署依赖：requirements-serve.txt（fastapi、uvicorn，在训练环境上附加安装）
 - 上游来源与许可：third_party/provenance.json、third_party/MedicalGPT-LICENSE
 - 模型、训练检查点、数据集和本地备份不纳入 Git；数据与模型通过项目命令下载、生成。
 
@@ -14,6 +16,8 @@ cd /d E:\desktop\LLM_Project\math-tutor
 python -m math_tutor --help
 python -m unittest discover -s tests -v
 python -m math_tutor chat --adapter runs/local-sft-v1
+python -m math_tutor serve --model models/math-sft-0.5b
+python -m math_tutor benchmark --model models/math-sft-0.5b
 ```
 
 训练：python -m math_tutor train --config configs/solve-v2-3k.json
