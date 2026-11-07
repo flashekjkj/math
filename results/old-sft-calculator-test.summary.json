@@ -1,0 +1,9 @@
+{
+  "n": 200,
+  "raw_correct": 48,
+  "tool_correct": 95,
+  "executable": 195,
+  "source": "results/sft-test.jsonl",
+  "source_sha256": "11e6ebbd055b03e7a68d041bbf07238e4c0078a1ee2be382b767289d883dbc2e",
+  "note": "Existing generations, strict single formula execution; no retraining or new prompt."
+}

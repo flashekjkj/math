@@ -44,8 +44,13 @@ def generate(tokenizer, model, messages, max_new_tokens):
 
 
 def chat(args):
+    from math_tutor.inference.calculator import TOOL_SYSTEM, execute
     tokenizer, model = load_inference(args)
-    messages = [{"role": "system", "content": get_system_prompt(args)}]
+    tool_mode = getattr(args, 'tool_calculation', False)
+    calculator_only = getattr(args, 'calculator_only', False)
+    if tool_mode and calculator_only:
+        raise ValueError('Choose one calculator mode')
+    messages = [{"role": "system", "content": TOOL_SYSTEM if tool_mode else get_system_prompt(args)}]
     print("输入 /exit 退出，/reset 清空历史。当前模型只做解题入门实验。")
     while True:
         q = input("你：").strip()
@@ -63,5 +68,9 @@ def chat(args):
             messages.pop()
             print(e)
             continue
-        print("模型：", answer)
+        if tool_mode or calculator_only:
+            result = execute(answer, require_call=tool_mode)
+            print("模型与计算器：", result['response'] if result['ok'] else '计算失败：'+result['error']+'\n原始输出：'+answer)
+        else:
+            print("模型：", answer)
         messages.append({"role": "assistant", "content": answer})

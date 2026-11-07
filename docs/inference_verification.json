@@ -1,6 +1,0 @@
-{
-  "existing_adapter_loaded": true,
-  "response": "5",
-  "inference_module": "math_tutor.inference.runtime",
-  "upstream_nested_exists": false
-}

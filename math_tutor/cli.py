@@ -41,6 +41,9 @@ def main():
         p.add_argument("--adapter")
         p.add_argument("--system-prompt-file")
         p.add_argument("--max-new-tokens", type=int, default=192)
+        if command == "chat":
+            p.add_argument("--tool-calculation", action="store_true")
+            p.add_argument("--calculator-only", action="store_true", help="Execute old-model formulas without requiring JSON calls")
         if command == "evaluate":
             p.add_argument("--data", default="data/processed/test.jsonl")
             p.add_argument("--output", required=True)

@@ -1,0 +1,25 @@
+{
+  "n": 100,
+  "status_counts": {
+    "inconsistent": 80,
+    "consistent": 18,
+    "uncheckable": 1,
+    "multiple_outputs": 1
+  },
+  "checked": 98,
+  "coverage": 0.98,
+  "consistency_among_checked": 0.1836734693877551,
+  "human_reviewed": 30,
+  "remaining": 70,
+  "human_sample_types": {
+    "arithmetic": 7,
+    "formulation": 18,
+    "none": 4,
+    "contradiction": 1
+  },
+  "limitations": [
+    "Arithmetic only; formulation needs human verification.",
+    "30-case human sample is intentionally biased; do not extrapolate its proportions.",
+    "Original model outputs and original accuracy are unchanged."
+  ]
+}

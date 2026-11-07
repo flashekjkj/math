@@ -1,0 +1,24 @@
+{
+  "n": 100,
+  "arithmetic_counts": {
+    "inconsistent": 80,
+    "consistent": 18,
+    "uncheckable": 1,
+    "needs_review": 1
+  },
+  "reviewed": 30,
+  "remaining": 70,
+  "human_error_counts": {
+    "arithmetic": 6,
+    "formulation": 17,
+    "none": 4,
+    "calculation": 1,
+    "contradiction": 1,
+    "reference": 1
+  },
+  "warnings": [
+    "train:6277: unknown error category"
+  ],
+  "disagreement_count": 1,
+  "note": "Human queue is deliberately sampled, not a population error-rate estimate. Arithmetic checks do not change original accuracy. Rounding can cause disagreement."
+}

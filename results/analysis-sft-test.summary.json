@@ -1,0 +1,17 @@
+{
+  "n": 200,
+  "correct": 68,
+  "tool_system_accuracy": 0.34,
+  "executable": 177,
+  "execution_rate": 0.885,
+  "accuracy_among_executable": 0.384180790960452,
+  "model": "models/math-analysis-0.5b",
+  "adapter": null,
+  "system_prompt": "你是中文数学助手。先用1至3句简短分析说明题意与数量关系，再给出列式。仅输出“分析：...”和“列式：...”两部分。不计算最终答案，算式由外部计算器执行。",
+  "max_new_tokens": 256,
+  "do_sample": false,
+  "batch_size": 4,
+  "require_json_call": false,
+  "data_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+}

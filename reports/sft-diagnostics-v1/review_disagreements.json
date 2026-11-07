@@ -1,0 +1,12 @@
+[
+  {
+    "id": "train:11207",
+    "human": true,
+    "automatic": {
+      "arithmetic_status": "inconsistent",
+      "equation_value": 1.6666666666666667,
+      "answer_value": 1.67,
+      "reason": "Strict numeric tolerance; rounded answers may need human review. Does not validate the equation against the question."
+    }
+  }
+]

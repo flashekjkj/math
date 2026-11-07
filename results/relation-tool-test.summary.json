@@ -1,0 +1,16 @@
+{
+  "n": 200,
+  "correct": 42,
+  "tool_system_accuracy": 0.21,
+  "executable": 185,
+  "execution_rate": 0.925,
+  "accuracy_among_executable": 0.22702702702702704,
+  "model": "models/math-relation-tool-0.5b",
+  "adapter": null,
+  "system_prompt": "你是数学助手。先用一句简短的关系解释说明列式，再输出列式和计算器调用。只输出三行：关系：解释；列式：数学表达式；工具调用：{\"name\":\"calculator\",\"expression\":\"同一个数学表达式\"}。不要自己计算或输出答案，答案由计算器返回。",
+  "max_new_tokens": 256,
+  "do_sample": false,
+  "batch_size": 4,
+  "data_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+}

@@ -1,0 +1,114 @@
+{
+  "completion": {
+    "completed": true,
+    "global_step": 200,
+    "train_questions": 200,
+    "valid_questions": 50,
+    "cuda_peak_allocated_bytes": 1281589760,
+    "reward": "numeric-v2 correctness only; no claim of verified reasoning"
+  },
+  "train_metrics": {
+    "epoch": 1.0,
+    "total_flos": 0.0,
+    "train_loss": 1.1036952891174679e-06,
+    "train_runtime": 1254.2751,
+    "train_samples_per_second": 0.159,
+    "train_steps_per_second": 0.159
+  },
+  "base_model_hashes_verified": true,
+  "training_rollouts": 800,
+  "unique_train_questions": 200,
+  "correct_rollouts": 127.0,
+  "mixed_reward_groups": 41,
+  "zero_std_group_fraction": 0.795,
+  "lora_b_nonzero_tensors": 48,
+  "lora_b_l2": 0.018103535512554305,
+  "evaluation": {
+    "SFT": {
+      "model": "models/math-sft-0.5b",
+      "adapter": null,
+      "data": "data/processed/valid.jsonl",
+      "data_sha256": "99eb40707b282429a36dd91842adc06a1fb0bb55d790c1dbf60348162a284364",
+      "max_new_tokens": 192,
+      "do_sample": false,
+      "n": 100,
+      "numeric_accuracy": 0.18,
+      "parse_rate": 0.99,
+      "note": "numeric_accuracy是全体样本上自动确认正确比例；未解析/冲突/多问不是已确认数学错误。judged_numeric_accuracy仅为已判定子集的辅助指标，必须同时查看coverage。只评价数值，不验证单位、推导或教学质量。",
+      "scorer_version": "numeric-v2",
+      "status_counts": {
+        "incorrect": 80,
+        "correct": 18,
+        "needs_review": 1,
+        "conflict": 1
+      },
+      "judged_numeric_accuracy": 0.1836734693877551,
+      "judged_count": 98,
+      "coverage": 0.98,
+      "system_prompt": "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。"
+    },
+    "DPO": {
+      "model": "models/math-sft-0.5b",
+      "adapter": "runs/dpo-demo-v1",
+      "data": "data/processed/valid.jsonl",
+      "data_sha256": "99eb40707b282429a36dd91842adc06a1fb0bb55d790c1dbf60348162a284364",
+      "max_new_tokens": 192,
+      "do_sample": false,
+      "n": 100,
+      "numeric_accuracy": 0.18,
+      "parse_rate": 0.99,
+      "note": "numeric_accuracy是全体样本上自动确认正确比例；未解析/冲突/多问不是已确认数学错误。judged_numeric_accuracy仅为已判定子集的辅助指标，必须同时查看coverage。只评价数值，不验证单位、推导或教学质量。",
+      "scorer_version": "numeric-v2",
+      "status_counts": {
+        "incorrect": 80,
+        "correct": 18,
+        "needs_review": 1,
+        "conflict": 1
+      },
+      "judged_numeric_accuracy": 0.1836734693877551,
+      "judged_count": 98,
+      "coverage": 0.98,
+      "system_prompt": "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。"
+    },
+    "GRPO": {
+      "model": "models/math-sft-0.5b",
+      "adapter": "runs/grpo-v1",
+      "data": "data/processed/valid.jsonl",
+      "data_sha256": "99eb40707b282429a36dd91842adc06a1fb0bb55d790c1dbf60348162a284364",
+      "max_new_tokens": 192,
+      "do_sample": false,
+      "n": 100,
+      "numeric_accuracy": 0.18,
+      "parse_rate": 0.99,
+      "note": "numeric_accuracy是全体样本上自动确认正确比例；未解析/冲突/多问不是已确认数学错误。judged_numeric_accuracy仅为已判定子集的辅助指标，必须同时查看coverage。只评价数值，不验证单位、推导或教学质量。",
+      "scorer_version": "numeric-v2",
+      "status_counts": {
+        "incorrect": 80,
+        "correct": 18,
+        "needs_review": 1,
+        "conflict": 1
+      },
+      "judged_numeric_accuracy": 0.1836734693877551,
+      "judged_count": 98,
+      "coverage": 0.98,
+      "system_prompt": "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。"
+    }
+  },
+  "paired_vs_sft": {
+    "DPO": {
+      "gain": 0,
+      "regression": 0,
+      "changed_response": 6
+    },
+    "GRPO": {
+      "gain": 0,
+      "regression": 0,
+      "changed_response": 2
+    }
+  },
+  "limitations": [
+    "Numerical outcome only, not verified reasoning or teaching.",
+    "GRPO uses online rollouts; same prompt pool is not equal compute to DPO.",
+    "DPO historical base weight hash was not recorded; current path and current base files verified."
+  ]
+}

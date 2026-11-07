@@ -27,7 +27,7 @@ def launch(args):
     module = 'math_tutor.training.' + STAGES[stage]
     command = [sys.executable, '-m', module]
     for key, value in config.items():
-        command.extend(['--' + key, str(value)])
+        command.extend(['--' + key, json.dumps(value) if isinstance(value, (dict, list)) else str(value)])
     print('本项目训练模块:', module, flush=True)
     print(subprocess.list2cmdline(command), flush=True)
     if getattr(args, 'dry_run', False):

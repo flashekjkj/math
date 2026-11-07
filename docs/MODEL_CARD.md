@@ -1,5 +1,20 @@
 # Math Tutor：实验模型说明
 
+## 教师分析标签实验
+
+models/math-analysis-0.5b：954条真实语义分析合成标签SFT，FP16合并，公式由计算器执行。
+固定200题测试68/200=34%，100题验证35/100=35%；低于旧SFT＋计算器47.5%，不替换最佳版本。
+完整条件、局限与命令见 docs/分析模型训练.md，数据由教师模型生成并自动质检，不代表人工逐条确认。
+
+## 当前关系解释与工具计算版本
+
+完整模型：models/math-relation-tool-0.5b；LoRA：runs/relation-tool-v1；配置：configs/relation-tool.json。
+同1000/100题，1 epoch、125次更新，训练约330.7秒，eval_loss约0.1429（训练目标已变化，不可与旧loss直接比较）。
+训练标签为算式结构关系说明、列式、calculator JSON调用；每个参考调用经过实际执行验证，不训练模型自己计算最终数字。
+运行时严格校验调用与列式是否一致，由受限计算器计算并返回最终答案。不是新增算术专项SFT，也不是自主多步Agent。
+关系说明为确定性结构模板，并非人工核验的题意数量关系，不保证提升审题能力。最终数值成绩属于模型与工具组成的系统。
+本轮最终测试报告 results/relation-tool-test.summary.json；三组对照 results/relation-tool-comparison.json。
+
 ## 用途和模型链
 
 中文小学应用题列式与数值作答的学习实验。基础模型 Qwen/Qwen2.5-0.5B-Instruct；SFT Adapter 为 runs/local-sft-v1；合并模型 models/math-sft-0.5b；DPO Adapter 为 runs/dpo-demo-v1，必须配合该合并模型加载。
@@ -23,7 +38,7 @@ DPO 使用 200/50 合成偏好对、25 次更新。拒绝回答由答案扰动�
 代码来源与适配记录位于 third_party/provenance.json。独立项目无需运行相邻 MedicalGPT。
 训练目录保留配置、数据/代码哈希及环境快照。已有历史评测的模型权重与运行环境快照不足以证明逐位可复现，应在新实验增加权重标识与环境记录。
 离线审计：python -m math_tutor.evaluation.project_audit --output reports/new-audit
-项目下一阶段方案见 docs/实习项目下一阶段.md。
+当前使用方案见 docs/使用说明.md。
 
 ## 发布状态
 
