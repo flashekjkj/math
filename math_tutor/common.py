@@ -2,6 +2,7 @@ from pathlib import Path
 import json
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_ID = "Qwen/Qwen2.5-0.5B-Instruct"
+CHAT_SYSTEM = "你是中文学习助手。用自然、简洁的中文和用户对话，根据上下文回答追问。可以闲聊、解释概念或讨论解题思路。用户只要提示时，先给一条提示。"
 SYSTEM = "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。"
 DATA_BASE = "https://raw.githubusercontent.com/SCNU203/Math23k/main/"
 def dump(path, obj):

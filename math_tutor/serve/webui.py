@@ -53,6 +53,7 @@ PAGE = r"""<!doctype html>
   <span style="flex:1"></span>
   <label for="mode" style="font-size:13px;color:#9aa3b2">提示词模式</label>
   <select id="mode">
+    <option value="chat">普通对话</option>
     <option value="solve">解题模式</option>
     <option value="tutor">辅导模式</option>
   </select>
@@ -62,7 +63,7 @@ PAGE = r"""<!doctype html>
 <footer>
   <div id="status"></div>
   <div id="input-row">
-    <textarea id="input" placeholder="输入数学题，Enter 发送，Shift+Enter 换行"></textarea>
+    <textarea id="input" placeholder="可以聊天、问概念或追问。Enter 发送，Shift+Enter 换行"></textarea>
     <button id="send">发送</button>
   </div>
 </footer>
@@ -72,14 +73,13 @@ const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const statusEl = document.getElementById('status');
 const modeEl = document.getElementById('mode');
+const resetBtn = document.getElementById('reset');
 let history = [];
-let prompts = { solve: '', tutor: '' };
 
 fetch('/health').then(r => r.json()).then(h => {
   document.getElementById('model-badge').textContent =
     `${h.model}${h.adapter ? ' + ' + h.adapter : ''} · ${h.device} · 显存 ${h.vram_allocated_gb}/${h.vram_total_gb} GB`;
 }).catch(() => {});
-fetch('/api/prompts').then(r => r.json()).then(p => { prompts = p; }).catch(() => {});
 
 function bubble(role) {
   const div = document.createElement('div');
@@ -95,16 +95,17 @@ function addMeta(text) {
   chat.appendChild(div);
 }
 
-document.getElementById('reset').onclick = () => { history = []; chat.innerHTML = ''; };
+resetBtn.onclick = () => { history = []; chat.innerHTML = ''; };
 
 async function send() {
+  if (sendBtn.disabled) return;
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
   bubble('user').textContent = text;
   history.push({ role: 'user', content: text });
-  const messages = [{ role: 'system', content: prompts[modeEl.value] || '' }, ...history];
   sendBtn.disabled = true;
+  modeEl.disabled = resetBtn.disabled = true;
   const out = bubble('assistant');
   out.innerHTML = '<span class="cursor">▋</span>';
   const t0 = performance.now();
@@ -112,7 +113,8 @@ async function send() {
   try {
     const res = await fetch('/v1/chat/completions', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'math-tutor', messages, stream: true, max_tokens: 512, temperature: 0.7 })
+      body: JSON.stringify({ model: 'math-tutor', messages: history, mode: modeEl.value,
+                             stream: true, max_tokens: 512, temperature: 0.7 })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + await res.text());
     const reader = res.body.getReader();
@@ -130,7 +132,9 @@ async function send() {
           if (!line.startsWith('data:')) continue;
           const data = line.slice(5).trim();
           if (data === '[DONE]') continue;
-          const delta = JSON.parse(data).choices?.[0]?.delta?.content || '';
+          const event = JSON.parse(data);
+          if (event.error) throw new Error(event.error);
+          const delta = event.choices?.[0]?.delta?.content || '';
           if (delta) {
             if (firstTokenAt === null) firstTokenAt = performance.now();
             content += delta;
@@ -147,10 +151,12 @@ async function send() {
             `共 ${elapsed.toFixed(2)}s · ` +
             (genSec > 0 ? (content.length / genSec / 2).toFixed(1) + ' 字/s' : ''));
   } catch (e) {
+    history.pop();
     out.textContent = '出错了：' + e.message;
   } finally {
     out.querySelector('.cursor')?.remove();
     sendBtn.disabled = false;
+    modeEl.disabled = resetBtn.disabled = false;
     input.focus();
     statusEl.textContent = '';
   }
@@ -158,7 +164,10 @@ async function send() {
 
 sendBtn.onclick = send;
 input.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+    e.preventDefault();
+    send();
+  }
 });
 </script>
 </body>

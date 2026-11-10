@@ -4,6 +4,7 @@
 4GB 笔记本可同时运行网页演示与单份评测。
 """
 import threading
+from contextlib import nullcontext
 
 from math_tutor.common import ROOT
 
@@ -26,6 +27,7 @@ class ModelEngine:
         self.model_dir = model_dir
         self.adapter_dir = adapter_dir
         self.max_new_tokens = max_new_tokens
+        self._generation_lock = threading.Lock()
 
     def info(self):
         import torch
@@ -48,7 +50,7 @@ class ModelEngine:
             raise ValueError('输入超过2048 token，请缩短问题或清空对话')
         return inputs
 
-    def stream(self, messages, max_new_tokens=None, temperature=0.7, top_p=0.9):
+    def stream(self, messages, max_new_tokens=None, temperature=0.7, top_p=0.9, *, use_adapter=True):
         """逐段产出生成文本；生成在后台线程执行，边生成边返回。"""
         import torch
         from transformers import TextIteratorStreamer
@@ -62,14 +64,30 @@ class ModelEngine:
                           temperature=temperature if do_sample else None,
                           top_p=top_p if do_sample else None,
                           pad_token_id=self.tokenizer.eos_token_id)
-        thread = threading.Thread(target=self.model.generate, kwargs=gen_kwargs)
+        errors = []
+
+        def generate_in_worker():
+            try:
+                # Adapter 状态在同一模型的所有请求之间共享。
+                with self._generation_lock:
+                    context = (self.model.disable_adapter()
+                               if self.adapter_dir and not use_adapter else nullcontext())
+                    with context:
+                        self.model.generate(**gen_kwargs)
+            except Exception as exc:
+                errors.append(exc)
+                streamer.end()
+
+        thread = threading.Thread(target=generate_in_worker)
         thread.start()
         try:
             for text in streamer:
                 yield text
         finally:
             thread.join()
+        if errors:
+            raise errors[0]
 
-    def generate(self, messages, max_new_tokens=None, temperature=0.7, top_p=0.9):
-        text = ''.join(self.stream(messages, max_new_tokens, temperature, top_p))
+    def generate(self, messages, max_new_tokens=None, temperature=0.7, top_p=0.9, *, use_adapter=True):
+        text = ''.join(self.stream(messages, max_new_tokens, temperature, top_p, use_adapter=use_adapter))
         return text

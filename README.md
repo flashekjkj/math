@@ -14,13 +14,15 @@ cd /d E:\desktop\LLM_Project\math-tutor
 python -m math_tutor --help
 python -m unittest discover -s tests -v
 python -m math_tutor chat --model models/math-relation-tool-0.5b --tool-calculation --max-new-tokens 256
-python -m math_tutor serve --model models/math-sft-0.5b
+python -m math_tutor chat
+python -m math_tutor serve
 python -m math_tutor benchmark --model models/math-sft-0.5b
 ```
 
 当前训练：python -m math_tutor train --config configs/relation-tool.json
 训练数据为原1000题增加算式结构关系说明与计算器调用；不扩数据，不训练模型执行算术。配置和数据已生成，不要覆盖旧实验目录。
 旧python starter.py命令保留兼容，主体代码已模块化。
+终端默认普通对话。要直接查看 SFT 模型的解题输出，使用 `python -m math_tutor chat --adapter runs/local-sft-v1 --solve`。如需由计算器复算，将 `--solve` 改为 `--calculator-only`。
 首次安装：配置匹配GPU的PyTorch，再安装requirements.txt；高级算法按需安装requirements-advanced.txt。
 当前环境完整版本记录在requirements.lock.txt。新服务器请先验证版本与GPU，不假定Windows环境可直接搬迁。
 

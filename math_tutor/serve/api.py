@@ -1,7 +1,7 @@
 """OpenAI 兼容推理服务 + 内置网页演示。
 
 启动：
-python -m math_tutor serve --model models/math-sft-0.5b
+python -m math_tutor serve
 python -m math_tutor serve --model models/qwen-0.5b --adapter runs/local-sft-v1
 
 接口：
@@ -18,13 +18,13 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
-from math_tutor.common import ROOT
+from math_tutor.common import CHAT_SYSTEM, ROOT
 from .engine import ModelEngine
 from .webui import PAGE
 
 
 def load_prompts():
-    prompts = {}
+    prompts = {'chat': CHAT_SYSTEM}
     for name in ('solve', 'tutor'):
         path = ROOT / 'prompts' / f'{name}.txt'
         if path.exists():
@@ -72,6 +72,13 @@ def create_app(args):
         messages = _messages_from(body)
         if messages is None:
             return JSONResponse(dict(error='messages 必须是 role/content 消息列表'), status_code=422)
+        mode = body.get('mode')
+        if mode is not None:
+            if not isinstance(mode, str) or mode not in prompts:
+                return JSONResponse(dict(error='未知对话模式'), status_code=422)
+            if messages[0]['role'] != 'system':
+                messages = [dict(role='system', content=prompts[mode]), *messages]
+        use_adapter = mode != 'chat'
         max_tokens = body.get('max_tokens') or engine.max_new_tokens
         temperature = float(body.get('temperature', 0.7))
         top_p = float(body.get('top_p', 0.9))
@@ -82,7 +89,7 @@ def create_app(args):
 
         if not want_stream:
             try:
-                content = engine.generate(messages, max_tokens, temperature, top_p)
+                content = engine.generate(messages, max_tokens, temperature, top_p, use_adapter=use_adapter)
             except ValueError as e:
                 return JSONResponse(dict(error=str(e)), status_code=413)
             prompt_tokens = engine._build_inputs(messages)['input_ids'].shape[1]
@@ -95,7 +102,7 @@ def create_app(args):
 
         async def event_stream():
             try:
-                stream = engine.stream(messages, max_tokens, temperature, top_p)
+                stream = engine.stream(messages, max_tokens, temperature, top_p, use_adapter=use_adapter)
                 first = True
                 for piece in stream:
                     chunk = dict(**base, choices=[dict(index=0, delta=dict(role='assistant', content=piece),

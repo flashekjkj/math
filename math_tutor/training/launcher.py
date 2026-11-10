@@ -10,7 +10,7 @@ from math_tutor.common import ROOT, dump
 STAGES = {
     'sft': 'supervised_finetuning', 'dpo': 'dpo_training', 'pt': 'pretraining',
     'orpo': 'orpo_training', 'grpo': 'grpo_training', 'rm': 'reward_modeling',
-    'ppo': 'ppo_training', 'opd': 'opd_training',
+    'ppo': 'ppo_training', 'rloo': 'rloo_training', 'opd': 'opd_training',
 }
 
 def launch(args):
@@ -20,8 +20,9 @@ def launch(args):
         if config.get(key):
             config[key] = str((ROOT / config[key]).resolve())
     if args.smoke:
-        config.update(max_train_samples=32, max_eval_samples=8, max_steps=5,
-                      logging_steps=1, eval_steps=5, save_steps=5)
+        config.update(max_train_samples=32, max_eval_samples=8, max_steps=5, logging_steps=1)
+        if stage != 'ppo':
+            config.update(eval_steps=5, save_steps=5)
         config['output_dir'] += '-smoke'
     out = Path(config['output_dir'])
     module = 'math_tutor.training.' + STAGES[stage]

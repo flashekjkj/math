@@ -32,7 +32,7 @@ def main():
     p = sub.add_parser("train")
     p.add_argument("--config", default="configs/local.json")
     p.add_argument("--smoke", action="store_true")
-    p.add_argument("--stage", choices=["sft","dpo","pt","orpo","grpo","rm","ppo","opd"], default="sft")
+    p.add_argument("--stage", choices=["sft","dpo","pt","orpo","grpo","rm","ppo","rloo","opd"], default="sft")
     p.add_argument("--dry-run", action="store_true")
     p.set_defaults(func=launch)
     for command, fn in (("chat", chat), ("evaluate", evaluate)):
@@ -42,8 +42,10 @@ def main():
         p.add_argument("--system-prompt-file")
         p.add_argument("--max-new-tokens", type=int, default=192)
         if command == "chat":
-            p.add_argument("--tool-calculation", action="store_true")
-            p.add_argument("--calculator-only", action="store_true", help="Execute old-model formulas without requiring JSON calls")
+            mode = p.add_mutually_exclusive_group()
+            mode.add_argument("--solve", action="store_true", help="使用固定格式解题")
+            mode.add_argument("--tool-calculation", action="store_true")
+            mode.add_argument("--calculator-only", action="store_true", help="Execute old-model formulas without requiring JSON calls")
         if command == "evaluate":
             p.add_argument("--data", default="data/processed/test.jsonl")
             p.add_argument("--output", required=True)
@@ -54,7 +56,7 @@ def main():
     p.add_argument("--output", required=True)
     p.set_defaults(func=rescore)
     p = sub.add_parser("serve", help="启动网页演示与 OpenAI 兼容推理服务")
-    p.add_argument("--model", default="models/math-sft-0.5b")
+    p.add_argument("--model")
     p.add_argument("--adapter")
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
@@ -69,6 +71,10 @@ def main():
     p.add_argument("--output", default="results/benchmark-math-sft.json")
     p.set_defaults(func=benchmark)
     args = parser.parse_args()
+    if args.cmd == "serve" and args.model is None:
+        args.model = "models/qwen-0.5b"
+        if args.adapter is None:
+            args.adapter = "runs/local-sft-v1"
     args.func(args)
 
 if __name__ == "__main__":

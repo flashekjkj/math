@@ -661,7 +661,7 @@ def main():
             model_args.device_map = None
         if model_args.device_map in ["None", "none", ""]:
             model_args.device_map = None
-        if script_args.qlora and (len(training_args.fsdp) > 0 or is_deepspeed_zero3_enabled()):
+        if script_args.qlora and (training_args.fsdp or is_deepspeed_zero3_enabled()):
             logger.warning("FSDP and DeepSpeed ZeRO-3 are both currently incompatible with QLoRA.")
 
         config_kwargs = {

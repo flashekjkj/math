@@ -1,4 +1,5 @@
 import argparse
+from contextlib import nullcontext
 import ast
 import hashlib
 import importlib.metadata
@@ -12,6 +13,7 @@ import subprocess
 import sys
 import urllib.request
 from math_tutor.common import ROOT, MODEL_ID, SYSTEM, DATA_BASE, dump, write_lines, read_records, get_system_prompt
+from math_tutor.common import CHAT_SYSTEM
 
 
 def load_inference(args):
@@ -50,8 +52,12 @@ def chat(args):
     calculator_only = getattr(args, 'calculator_only', False)
     if tool_mode and calculator_only:
         raise ValueError('Choose one calculator mode')
-    messages = [{"role": "system", "content": TOOL_SYSTEM if tool_mode else get_system_prompt(args)}]
-    print("输入 /exit 退出，/reset 清空历史。当前模型只做解题入门实验。")
+    ordinary_chat = not (tool_mode or calculator_only or getattr(args, 'solve', False)
+                         or getattr(args, 'system_prompt_file', None))
+    system = CHAT_SYSTEM if ordinary_chat else (TOOL_SYSTEM if tool_mode else get_system_prompt(args))
+    messages = [{"role": "system", "content": system}]
+    mode_name = "普通对话" if ordinary_chat else "解题"
+    print(f"{mode_name}模式。输入 /exit 退出，/reset 清空历史。")
     while True:
         q = input("你：").strip()
         if q == "/exit":
@@ -63,7 +69,9 @@ def chat(args):
             continue
         messages.append({"role": "user", "content": q})
         try:
-            answer = generate(tokenizer, model, messages, args.max_new_tokens)
+            context = model.disable_adapter() if ordinary_chat and args.adapter else nullcontext()
+            with context:
+                answer = generate(tokenizer, model, messages, args.max_new_tokens)
         except ValueError as e:
             messages.pop()
             print(e)
