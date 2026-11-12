@@ -1,0 +1,123 @@
+{
+  "data": {
+    "sampled": 480,
+    "correct_response": 176,
+    "incomplete_or_unexecutable": 51,
+    "train_pairs": 200,
+    "valid_pairs": 30,
+    "limitation": "Numeric wrongness relative to reference; explanation semantics not individually human verified."
+  },
+  "training": {
+    "epoch": 1.0,
+    "total_flos": 155426225518080.0,
+    "train_loss": 0.672913761138916,
+    "train_runtime": 150.6447,
+    "train_samples": 200,
+    "train_samples_per_second": 1.328,
+    "train_steps_per_second": 0.166
+  },
+  "validation": {
+    "epoch": 1.0,
+    "eval_entropy": 1.1678215305010478,
+    "eval_logits/chosen": -0.5659637547156612,
+    "eval_logits/rejected": -0.5823576137542588,
+    "eval_logps/chosen": -84.360986328125,
+    "eval_logps/rejected": -40.56091416676839,
+    "eval_loss": 0.6547744870185852,
+    "eval_mean_token_accuracy": 0.7181124409039815,
+    "eval_num_tokens": 69116.0,
+    "eval_rewards/accuracies": 0.9666666666666667,
+    "eval_rewards/chosen": 0.0031478503554050502,
+    "eval_rewards/margins": 0.07866790865858396,
+    "eval_rewards/rejected": -0.07552005865921577,
+    "eval_runtime": 10.3457,
+    "eval_samples": 30,
+    "eval_samples_per_second": 2.9,
+    "eval_steps_per_second": 2.9
+  },
+  "global_step": 25,
+  "nonzero_lora_b": 48,
+  "base_hash_verified": true,
+  "evaluation": {
+    "SFT验证": {
+      "n": 100,
+      "correct": 35,
+      "tool_system_accuracy": 0.35,
+      "executable": 88,
+      "execution_rate": 0.88,
+      "accuracy_among_executable": 0.3977272727272727,
+      "model": "models/math-analysis-0.5b",
+      "adapter": null,
+      "system_prompt": "你是中文数学助手。先用1至3句简短分析说明题意与数量关系，再给出列式。仅输出“分析：...”和“列式：...”两部分。不计算最终答案，算式由外部计算器执行。",
+      "max_new_tokens": 256,
+      "do_sample": false,
+      "batch_size": 4,
+      "require_json_call": false,
+      "data_sha256": "99eb40707b282429a36dd91842adc06a1fb0bb55d790c1dbf60348162a284364",
+      "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+    },
+    "DPO验证": {
+      "n": 100,
+      "correct": 35,
+      "tool_system_accuracy": 0.35,
+      "executable": 89,
+      "execution_rate": 0.89,
+      "accuracy_among_executable": 0.39325842696629215,
+      "model": "models/math-analysis-0.5b",
+      "adapter": "runs/analysis-dpo-v1",
+      "system_prompt": "你是中文数学助手。先用1至3句简短分析说明题意与数量关系，再给出列式。仅输出“分析：...”和“列式：...”两部分。不计算最终答案，算式由外部计算器执行。",
+      "max_new_tokens": 256,
+      "do_sample": false,
+      "batch_size": 4,
+      "require_json_call": false,
+      "data_sha256": "99eb40707b282429a36dd91842adc06a1fb0bb55d790c1dbf60348162a284364",
+      "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+    },
+    "SFT历史测试": {
+      "n": 200,
+      "correct": 68,
+      "tool_system_accuracy": 0.34,
+      "executable": 177,
+      "execution_rate": 0.885,
+      "accuracy_among_executable": 0.384180790960452,
+      "model": "models/math-analysis-0.5b",
+      "adapter": null,
+      "system_prompt": "你是中文数学助手。先用1至3句简短分析说明题意与数量关系，再给出列式。仅输出“分析：...”和“列式：...”两部分。不计算最终答案，算式由外部计算器执行。",
+      "max_new_tokens": 256,
+      "do_sample": false,
+      "batch_size": 4,
+      "require_json_call": false,
+      "data_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+      "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+    },
+    "DPO测试": {
+      "n": 200,
+      "correct": 64,
+      "tool_system_accuracy": 0.32,
+      "executable": 177,
+      "execution_rate": 0.885,
+      "accuracy_among_executable": 0.3615819209039548,
+      "model": "models/math-analysis-0.5b",
+      "adapter": "runs/analysis-dpo-v1",
+      "system_prompt": "你是中文数学助手。先用1至3句简短分析说明题意与数量关系，再给出列式。仅输出“分析：...”和“列式：...”两部分。不计算最终答案，算式由外部计算器执行。",
+      "max_new_tokens": 256,
+      "do_sample": false,
+      "batch_size": 4,
+      "require_json_call": false,
+      "data_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+      "note": "System result, not independent model arithmetic accuracy. Calculator never sees reference. Value matching is not proof of formulation or explanation correctness."
+    }
+  },
+  "paired": {
+    "valid": {
+      "gain": 6,
+      "regression": 6,
+      "changed_responses": 43
+    },
+    "test": {
+      "gain": 3,
+      "regression": 7,
+      "changed_responses": 79
+    }
+  }
+}

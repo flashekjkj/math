@@ -430,8 +430,8 @@ def main():
             desc="Running tokenizer on dataset",
         )
         train_dataset = tokenized_dataset.filter(
-            lambda x: 0 < len(x['prompt'] + x['chosen']) <= full_max_length
-                      and 0 < len(x['prompt'] + x['rejected']) <= full_max_length
+            lambda x: all(0 < len(tokenizer.encode(x['prompt'] + x[field], add_special_tokens=False)) + 1 <= full_max_length
+                          for field in ('chosen', 'rejected'))
         )
         logger.debug(f"Num train_samples: {len(train_dataset)}")
         logger.debug("First train example:")
@@ -460,8 +460,8 @@ def main():
             desc="Running tokenizer on dataset",
         )
         eval_dataset = eval_dataset.filter(
-            lambda x: 0 < len(x['prompt'] + x['chosen']) <= full_max_length
-                      and 0 < len(x['prompt'] + x['rejected']) <= full_max_length
+            lambda x: all(0 < len(tokenizer.encode(x['prompt'] + x[field], add_special_tokens=False)) + 1 <= full_max_length
+                          for field in ('chosen', 'rejected'))
         )
         logger.debug(f"Num eval_samples: {len(eval_dataset)}")
         logger.debug("First eval example:")

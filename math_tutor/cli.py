@@ -37,11 +37,12 @@ def main():
     p.set_defaults(func=launch)
     for command, fn in (("chat", chat), ("evaluate", evaluate)):
         p = sub.add_parser(command)
-        p.add_argument("--model", default="models/qwen-0.5b")
+        p.add_argument("--model", default=None if command == "chat" else "models/qwen-0.5b")
         p.add_argument("--adapter")
         p.add_argument("--system-prompt-file")
         p.add_argument("--max-new-tokens", type=int, default=192)
         if command == "chat":
+            p.add_argument("--keep-history", action="store_true", help="固定解题模式保留历史；默认各题独立，自动辅导始终保留历史")
             mode = p.add_mutually_exclusive_group()
             mode.add_argument("--solve", action="store_true", help="使用固定格式解题")
             mode.add_argument("--tool-calculation", action="store_true")
@@ -71,9 +72,12 @@ def main():
     p.add_argument("--output", default="results/benchmark-math-sft.json")
     p.set_defaults(func=benchmark)
     args = parser.parse_args()
-    if args.cmd == "serve" and args.model is None:
+    if args.cmd in ("chat", "serve") and args.model is None:
         args.model = "models/qwen-0.5b"
-        if args.adapter is None:
+        automatic = args.cmd == "serve" or not (
+            args.solve or args.tool_calculation or args.calculator_only or args.system_prompt_file
+        )
+        if args.adapter is None and automatic:
             args.adapter = "runs/local-sft-v1"
     args.func(args)
 

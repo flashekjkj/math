@@ -51,19 +51,14 @@ PAGE = r"""<!doctype html>
   <h1>Math Tutor</h1>
   <span id="model-badge">加载中…</span>
   <span style="flex:1"></span>
-  <label for="mode" style="font-size:13px;color:#9aa3b2">提示词模式</label>
-  <select id="mode">
-    <option value="chat">普通对话</option>
-    <option value="solve">解题模式</option>
-    <option value="tutor">辅导模式</option>
-  </select>
+  <span style="font-size:13px;color:#9aa3b2">自动辅导</span>
   <button id="reset">清空对话</button>
 </header>
 <div id="chat"></div>
 <footer>
-  <div id="status"></div>
+  <div id="status">试试「给我出一道乘法题」，也可以贴上题目、答案和解题步骤。</div>
   <div id="input-row">
-    <textarea id="input" placeholder="可以聊天、问概念或追问。Enter 发送，Shift+Enter 换行"></textarea>
+    <textarea id="input" placeholder="聊天、解题、检查作答或做练习。Shift+Enter 换行"></textarea>
     <button id="send">发送</button>
   </div>
 </footer>
@@ -72,7 +67,6 @@ const chat = document.getElementById('chat');
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const statusEl = document.getElementById('status');
-const modeEl = document.getElementById('mode');
 const resetBtn = document.getElementById('reset');
 let history = [];
 
@@ -105,7 +99,7 @@ async function send() {
   bubble('user').textContent = text;
   history.push({ role: 'user', content: text });
   sendBtn.disabled = true;
-  modeEl.disabled = resetBtn.disabled = true;
+  resetBtn.disabled = true;
   const out = bubble('assistant');
   out.innerHTML = '<span class="cursor">▋</span>';
   const t0 = performance.now();
@@ -113,7 +107,7 @@ async function send() {
   try {
     const res = await fetch('/v1/chat/completions', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'math-tutor', messages: history, mode: modeEl.value,
+      body: JSON.stringify({ model: 'math-tutor', messages: history, mode: 'auto',
                              stream: true, max_tokens: 512, temperature: 0.7 })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + await res.text());
@@ -156,7 +150,7 @@ async function send() {
   } finally {
     out.querySelector('.cursor')?.remove();
     sendBtn.disabled = false;
-    modeEl.disabled = resetBtn.disabled = false;
+    resetBtn.disabled = false;
     input.focus();
     statusEl.textContent = '';
   }

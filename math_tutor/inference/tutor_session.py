@@ -20,9 +20,9 @@ _PRACTICE_FOOTER = '\n\n请发你的答案或解题步骤。也可以说“给�
 _FIELD = re.compile(r'(?:^|[\s；;。])\s*(?:我的|学生的?)?(题目|问题|列式|算式|步骤|答案|作答)\s*[:：]\s*')
 _MATH = r'[0-9.()+*/%÷×^−\-\s]+'
 _WORD = re.compile(r'(?:小明)?有(\d{1,3})盒(?:铅笔|彩笔)[，,]每盒(\d{1,3})支[，,](?:一共|总共)有?多少支[？?]?')
-_PRACTICE = re.compile(r'出(?:一|1|个|道|题|点|些|几|\d)|来(?:一|1|个|道|点|些|几|\d).{0,12}题|考考我|给我.{0,8}练习题|再来(?:一|1|个|道)|下一题')
+_PRACTICE = re.compile(r'出(?:一|1|个|道|题|点|些|几|\d)|来(?:一|1|个|道|点|些|几|\d).{0,12}题|考考我|给我(?:一|1|几|个|道).{0,14}题|(?:我想|我要|想)练习|给我.{0,8}练习题|再来(?:一|1|个|道)|下一题')
 _ASK_CHECK = re.compile(r'对不对|对吗|正确吗|算对了吗|算错了吗|哪里错|哪一步错|错在哪|批改|帮我(?:检查|核对|验算)|检查(?:答案|列式|作答|步骤)')
-_HINT = re.compile(r'提示|思路|怎么想|从哪(?:里)?入手')
+_HINT = re.compile(r'提示|思路|怎么想|从哪(?:里)?入手|不知道怎么|先别(?:给|说)答案|不(?:要|用)给答案')
 _REVEAL = re.compile(r'^(?:请|直接|可以)?(?:给我|告诉我|公布|看看|查看)?(?:正确|完整|最终)?(?:答案|解答|解析)[。！!？?]?$')
 _FOLLOW = re.compile(r'^(?:为什么|怎么得(?:出|到)|哪一步|哪里错|再解释|怎么列式)')
 _SOLVE = re.compile(r'多少|百分之几|几分之几|还剩几个|怎么解|怎么列式|求(?:出|解|值|面积|周长)|解(?:答|一下|这道题)|算(?:一下|出|算)|等于几')
@@ -141,12 +141,16 @@ def parse_submission(text):
     equal = re.fullmatch(rf'\s*({_MATH})\s*=\s*([^=]+)', equation)
     if equal and re.search(r'\d', equal[1]) and numeric_fragment(equal[2]) is not None:
         return Submission(formula=equal[1].strip(), answer=equal[2].strip())
-    natural = re.search(r'(?:^|[，,。!?；;\n]\s*)(?:我的答案是|我答的是|我答|我算出来是|我算的是|我算出|我算是|我算|我觉得是|我认为是)\s*(.+)', text, re.S)
+    natural = re.search(r'(?:^|[，,。!?；;\n]\s*)(?:我的答案是|答案是|结果是|应该是|我答的是|我答|我算出来是|我算的是|我算出|我算是|我算|我觉得是|我认为是)\s*(.+)', text, re.S)
     if natural:
         question = text[:natural.start()].strip()
         answer = _ASK_CHECK.split(natural[1], maxsplit=1)[0].strip(' ，,。!?')
         if numeric_fragment(answer) is not None:
             return Submission(question=question, answer=answer)
+    equations = list(_equations(text))
+    if len(equations) > 1 and all(re.fullmatch(_MATH, side) for _, left, right in equations for side in (left, right)):
+        answer = equations[-1][2]
+        return Submission(steps=text, answer=answer if numeric_fragment(answer) is not None else '')
     return Submission(answer=text) if numeric_fragment(text) is not None else Submission()
 
 
@@ -275,7 +279,17 @@ def _new_practice(text, previous=''):
     question = questions[topic]
     if topic != '应用题':
         question += ' = ?'
+    if question == previous:
+        return _new_practice(text, previous)
     return _PRACTICE_HEADER + question + _PRACTICE_FOOTER
+
+
+def _looks_like_problem(question):
+    if _arithmetic(question) or _WORD.fullmatch(_text(question)):
+        return True
+    if not _SOLVE.search(question) or _CONCEPT.search(question):
+        return False
+    return bool(re.search(r'\d|题|算式|方程|函数|面积|周长|分数|角度|概率|算术|百分数', question))
 
 
 def _context(history):
@@ -290,7 +304,7 @@ def _context(history):
             submission = parse_submission(content)
             if submission.question:
                 return submission.question, False
-            if _arithmetic(content) or _WORD.fullmatch(_text(content)):
+            if _looks_like_problem(content):
                 return content, False
     return '', False
 
@@ -315,6 +329,10 @@ def route_turn(messages):
         reference = reference_for(current.question) if current.question else None
         if current.question or current.formula or current.steps:
             return Turn('check', grade(current, reference, bool(_HINT.search(text))))
+    if not submission.has_work and re.fullmatch(_MATH, text) and _arithmetic(text):
+        question, active = _context(history)
+        if active:
+            return Turn('check', grade(Submission(question=question, formula=text), reference_for(question)))
     if _ASK_CHECK.search(text) or (submission.answer and _FIELD.search(text)):
         return Turn('check', '请把题目和你的答案一起发给我。如果你写了列式或步骤，也可以一并贴上。')
 
@@ -332,7 +350,7 @@ def route_turn(messages):
     question = submission.question or text
     if _CONCEPT.search(question):
         return Turn('chat')
-    if _arithmetic(question) or _WORD.fullmatch(_text(question)) or _SOLVE.search(question):
+    if _looks_like_problem(question):
         reference = reference_for(question)
         if reference:
             return Turn('solve', f'列式：{reference.formula}\n答案：{_format(reference.value)}')

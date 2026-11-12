@@ -14,6 +14,7 @@ import sys
 import urllib.request
 from math_tutor.common import ROOT, MODEL_ID, SYSTEM, DATA_BASE, dump, write_lines, read_records, get_system_prompt
 from math_tutor.common import CHAT_SYSTEM
+from math_tutor.inference.tutor_session import TUTOR_SYSTEM, finish_solution, route_turn
 
 
 def load_inference(args):
@@ -23,7 +24,7 @@ def load_inference(args):
         raise SystemExit("本套推理命令需要 CUDA GPU。先执行 python starter.py check")
     path = str((ROOT / args.model).resolve())
     tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=False)
-    model = AutoModelForCausalLM.from_pretrained(path, torch_dtype=torch.float16,
+    model = AutoModelForCausalLM.from_pretrained(path, dtype=torch.float16,
                                                device_map={"": 0}, trust_remote_code=False)
     if args.adapter:
         from peft import PeftModel
@@ -52,26 +53,39 @@ def chat(args):
     calculator_only = getattr(args, 'calculator_only', False)
     if tool_mode and calculator_only:
         raise ValueError('Choose one calculator mode')
-    ordinary_chat = not (tool_mode or calculator_only or getattr(args, 'solve', False)
-                         or getattr(args, 'system_prompt_file', None))
-    system = CHAT_SYSTEM if ordinary_chat else (TOOL_SYSTEM if tool_mode else get_system_prompt(args))
-    messages = [{"role": "system", "content": system}]
-    mode_name = "普通对话" if ordinary_chat else "解题"
+    automatic = not (tool_mode or calculator_only or getattr(args, 'solve', False)
+                     or getattr(args, 'system_prompt_file', None))
+    systems = {"chat": CHAT_SYSTEM, "solve": SYSTEM, "tutor": TUTOR_SYSTEM}
+    explicit_system = TOOL_SYSTEM if tool_mode else get_system_prompt(args)
+    messages = []
+    keep_history = automatic or getattr(args, 'keep_history', False)
+    mode_name = "自动辅导" if automatic else ("多轮解题" if keep_history else "单题解题")
     print(f"{mode_name}模式。输入 /exit 退出，/reset 清空历史。")
     while True:
         q = input("你：").strip()
         if q == "/exit":
             break
         if q == "/reset":
-            messages = messages[:1]
+            messages.clear()
             continue
         if not q:
             continue
+        if not keep_history:
+            messages.clear()
         messages.append({"role": "user", "content": q})
         try:
-            context = model.disable_adapter() if ordinary_chat and args.adapter else nullcontext()
-            with context:
-                answer = generate(tokenizer, model, messages, args.max_new_tokens)
+            turn = route_turn(messages) if automatic else None
+            if turn and turn.reply is not None:
+                answer = turn.reply
+            else:
+                system = systems[turn.mode] if turn else explicit_system
+                context = (model.disable_adapter() if turn and turn.mode != 'solve' and args.adapter
+                           else nullcontext())
+                with context:
+                    answer = generate(tokenizer, model, [{"role": "system", "content": system}, *messages],
+                                      args.max_new_tokens)
+                if turn and turn.mode == 'solve':
+                    answer = finish_solution(answer)
         except ValueError as e:
             messages.pop()
             print(e)

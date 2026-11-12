@@ -7,8 +7,8 @@
       "source": "training/dpo_training.py",
       "destination": "math_tutor/training/dpo_training.py",
       "source_sha256": "29e8070776a0d8e5a756a19d19662b8713b6cb4bb67d4b9d58d9f09e8ebca1e7",
-      "local_sha256": "edae08a3dc909d13bc3c32f658b20883544c4a0dc28e423c2fb5851b0c9ab3f2",
-      "adaptation": "Project-qualified imports and attribution header; algorithm preserved.; <=1 DPO preprocessing worker executes in-process."
+      "local_sha256": "f48146758f52feab6da6be3e8ec3f3cb3e72b5832bed56a5b208900b64f7544e",
+      "adaptation": "Project-qualified imports and attribution header; algorithm preserved.; <=1 DPO preprocessing worker executes in-process.; Pair length filtering uses tokenizer tokens plus EOS."
     },
     {
       "source": "training/grpo_training.py",
