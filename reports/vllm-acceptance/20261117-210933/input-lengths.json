@@ -1,0 +1,9 @@
+{
+  "n": 100,
+  "min": 76,
+  "median": 97,
+  "p95": 117,
+  "max": 131,
+  "output_token_limit": 192,
+  "all_fit_1024": true
+}

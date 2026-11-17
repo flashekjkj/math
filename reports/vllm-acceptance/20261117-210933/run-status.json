@@ -1,0 +1,4 @@
+{
+  "status": "failed",
+  "error": "Stop existing GPU containers before full acceptance: math-tutor-vllm"
+}

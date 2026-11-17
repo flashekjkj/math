@@ -1,0 +1,32 @@
+services:
+  vllm:
+    image: ${VLLM_IMAGE:?Run python3 freeze.py first}
+    pull_policy: never
+    gpus: all
+    ports:
+      - "127.0.0.1:8001:8000"
+    shm_size: "1gb"
+    volumes:
+      - type: bind
+        source: ${PROJECT_DIR:?Run freeze.py first}
+        target: /workspace/math-tutor
+        read_only: true
+      - vllm-cache:/root/.cache/vllm
+    command:
+      - --model
+      - /workspace/math-tutor/models/math-sft-0.5b
+      - --served-model-name
+      - math-sft
+      - --dtype
+      - half
+      - --max-model-len
+      - "1024"
+      - --max-num-seqs
+      - "1"
+      - --max-num-batched-tokens
+      - "1024"
+      - --gpu-memory-utilization
+      - "0.70"
+      - --enforce-eager
+volumes:
+  vllm-cache:

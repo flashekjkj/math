@@ -1,0 +1,21 @@
+{
+  "id": "chatcmpl-98b38a54d3954401",
+  "object": "chat.completion",
+  "created": 1794921045,
+  "model": "math-tutor",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "3+5=8"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 71,
+    "completion_tokens": 5,
+    "total_tokens": 76
+  }
+}

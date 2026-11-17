@@ -16,6 +16,8 @@ import time
 import uuid
 
 from fastapi import FastAPI, Request
+from starlette.concurrency import iterate_in_threadpool, run_in_threadpool
+from .remote import RemoteModelEngine, UpstreamError
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
 from math_tutor.common import CHAT_SYSTEM, ROOT, SYSTEM
@@ -47,7 +49,14 @@ def _messages_from(body):
 
 
 def create_app(args):
-    engine = ModelEngine(args.model, args.adapter, args.max_new_tokens)
+    remote = getattr(args, 'backend', 'transformers') == 'vllm'
+    if remote:
+        if args.adapter:
+            raise ValueError('vLLM 后端请通过 --remote-model 选择上游模型，不使用本地 --adapter')
+        engine = RemoteModelEngine(args.base_url, args.remote_model, args.max_new_tokens,
+                                   args.request_timeout, args.remote_chat_model)
+    else:
+        engine = ModelEngine(args.model, args.adapter, args.max_new_tokens)
     prompts = load_prompts()
     app = FastAPI(title='Math Tutor', version='0.1.0')
     app.state.engine = engine
@@ -55,6 +64,15 @@ def create_app(args):
     @app.get('/health')
     def health():
         return engine.info()
+
+    @app.get('/ready')
+    async def ready():
+        if not remote:
+            return engine.info()
+        try:
+            return await engine.ready()
+        except UpstreamError as exc:
+            return JSONResponse(dict(error=str(exc)), status_code=503)
 
     @app.get('/v1/models')
     def models():
@@ -92,15 +110,21 @@ def create_app(args):
             if messages[0]['role'] != 'system':
                 messages = [dict(role='system', content=prompts[mode]), *messages]
         use_adapter = turn.mode == 'solve' if turn else mode != 'chat'
-        max_tokens = body.get('max_tokens') or engine.max_new_tokens
-        temperature = float(body.get('temperature', 0.7))
-        top_p = float(body.get('top_p', 0.9))
+        max_tokens = body.get('max_tokens', engine.max_new_tokens)
+        try:
+            temperature = float(body.get('temperature', 0.7))
+            top_p = float(body.get('top_p', 0.9))
+            if (isinstance(max_tokens, bool) or not isinstance(max_tokens, int)
+                    or max_tokens <= 0 or not 0 <= temperature <= 2 or not 0 < top_p <= 1):
+                raise ValueError()
+        except (TypeError, ValueError):
+            return JSONResponse(dict(error='生成参数无效'), status_code=422)
         want_stream = bool(body.get('stream', False))
         model_id = 'math-tutor'
         base = dict(id='chatcmpl-' + uuid.uuid4().hex[:16], object='chat.completion',
                     created=int(time.time()), model=model_id)
 
-        def reply_chunks():
+        def local_reply_chunks():
             if turn and turn.reply is not None:
                 yield turn.reply
             elif turn and turn.mode == 'solve':
@@ -109,24 +133,47 @@ def create_app(args):
             else:
                 yield from engine.stream(messages, max_tokens, temperature, top_p, use_adapter=use_adapter)
 
+        async def reply_chunks():
+            if not remote:
+                async for piece in iterate_in_threadpool(local_reply_chunks()):
+                    yield piece
+            elif turn and turn.reply is not None:
+                yield turn.reply
+            elif turn and turn.mode == 'solve':
+                raw = await engine.agenerate(messages, max_tokens, temperature, top_p,
+                                             use_adapter=use_adapter)
+                yield finish_solution(raw)
+            elif not want_stream:
+                yield await engine.agenerate(messages, max_tokens, temperature, top_p,
+                                             use_adapter=use_adapter)
+            else:
+                async for piece in engine.astream(messages, max_tokens, temperature, top_p,
+                                                 use_adapter=use_adapter):
+                    yield piece
+
         if not want_stream:
             try:
-                content = ''.join(reply_chunks())
+                content = ''.join([piece async for piece in reply_chunks()])
+            except UpstreamError as e:
+                return JSONResponse(dict(error=str(e)), status_code=e.status_code)
             except ValueError as e:
                 return JSONResponse(dict(error=str(e)), status_code=413)
-            deterministic = turn is not None and turn.reply is not None
-            prompt_tokens = 0 if deterministic else engine._build_inputs(messages)['input_ids'].shape[1]
-            completion_tokens = 0 if deterministic else len(engine.tokenizer.encode(content, add_special_tokens=False))
-            return dict(**base,
-                        choices=[dict(index=0, message=dict(role='assistant', content=content),
-                                      finish_reason='stop')],
-                        usage=dict(prompt_tokens=prompt_tokens, completion_tokens=completion_tokens,
-                                   total_tokens=prompt_tokens + completion_tokens))
+            result = dict(**base, choices=[dict(index=0,
+                message=dict(role='assistant', content=content), finish_reason='stop')])
+            if not remote:
+                def usage():
+                    deterministic = turn is not None and turn.reply is not None
+                    pt = 0 if deterministic else engine._build_inputs(messages)['input_ids'].shape[1]
+                    ct = 0 if deterministic else len(engine.tokenizer.encode(content, add_special_tokens=False))
+                    return dict(prompt_tokens=pt, completion_tokens=ct, total_tokens=pt + ct)
+                result['usage'] = await run_in_threadpool(usage)
+            # Remote usage is omitted: postprocessing changes text, and no local tokenizer is loaded.
+            return result
 
-        def event_stream():
+        async def event_stream():
             try:
                 first = True
-                for piece in reply_chunks():
+                async for piece in reply_chunks():
                     chunk = dict(**base, choices=[dict(index=0, delta=dict(role='assistant', content=piece),
                                                        finish_reason=None)])
                     yield ('data: ' + json.dumps(chunk, ensure_ascii=False) + '\n\n')
@@ -138,7 +185,7 @@ def create_app(args):
                 yield 'data: ' + json.dumps(dict(**base, choices=[dict(
                     index=0, delta=dict(), finish_reason='stop')]), ensure_ascii=False) + '\n\n'
                 yield 'data: [DONE]\n\n'
-            except ValueError as e:
+            except (ValueError, UpstreamError) as e:
                 yield 'data: ' + json.dumps(dict(error=str(e)), ensure_ascii=False) + '\n\n'
 
         return StreamingResponse(event_stream(), media_type='text/event-stream')
@@ -154,7 +201,7 @@ def serve(args):
     import uvicorn
     app = create_app(args)
     info = app.state.engine.info()
-    print(json.dumps(dict(模型已加载=info), ensure_ascii=False, indent=2))
+    print(json.dumps(dict(推理后端=info), ensure_ascii=False, indent=2))
     print('打开 http://%s:%d 使用网页演示' % (args.host, args.port))
     print('接口：POST http://%s:%d/v1/chat/completions（OpenAI 格式）' % (args.host, args.port))
     uvicorn.run(app, host=args.host, port=args.port, log_level='warning')

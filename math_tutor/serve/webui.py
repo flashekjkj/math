@@ -72,6 +72,7 @@ let history = [];
 
 fetch('/health').then(r => r.json()).then(h => {
   document.getElementById('model-badge').textContent =
+    h.backend === 'vllm' ? `${h.model} · vLLM 远程服务 · 显存由推理服务管理` :
     `${h.model}${h.adapter ? ' + ' + h.adapter : ''} · ${h.device} · 显存 ${h.vram_allocated_gb}/${h.vram_total_gb} GB`;
 }).catch(() => {});
 

@@ -1,0 +1,17 @@
+{
+  "scorer_version": "numeric-v2",
+  "n": 100,
+  "status_counts": {
+    "incorrect": 80,
+    "correct": 18,
+    "needs_review": 1,
+    "conflict": 1
+  },
+  "numeric_accuracy": 0.18,
+  "judged_numeric_accuracy": 0.1836734693877551,
+  "judged_count": 98,
+  "coverage": 0.98,
+  "parse_rate": 0.99,
+  "note": "numeric_accuracy是全体样本上自动确认正确比例；未解析/冲突/多问不是已确认数学错误。judged_numeric_accuracy仅为已判定子集的辅助指标，必须同时查看coverage。只评价数值，不验证单位、推导或教学质量。",
+  "request_failures": 0
+}

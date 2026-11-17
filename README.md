@@ -30,3 +30,7 @@ python -m math_tutor benchmark --model models/math-sft-0.5b
 
 
 GRPO：参见 [训练命令与实现](docs/GRPO训练说明.md) 和 [第一轮实验结果](docs/GRPO实验结果.md)。
+
+- [vLLM 固定部署与项目接入](docs/vLLM部署与接入.md)
+
+- [vLLM 验收与性能对照](docs/vLLM验收与性能对照.md)

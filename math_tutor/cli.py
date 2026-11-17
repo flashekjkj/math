@@ -62,6 +62,11 @@ def main():
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
     p.add_argument("--max-new-tokens", type=int, default=512)
+    p.add_argument('--backend', choices=['transformers', 'vllm'], default='transformers')
+    p.add_argument('--base-url', default='http://127.0.0.1:8001/v1')
+    p.add_argument('--remote-model', default='math-sft')
+    p.add_argument('--remote-chat-model', help='上游底座模型名；不填则所有模式使用 remote-model')
+    p.add_argument('--request-timeout', type=float, default=120)
     p.set_defaults(func=serve)
     p = sub.add_parser("benchmark", help="推理基准：加载耗时、显存、首字延迟、tokens/s")
     p.add_argument("--model", default="models/math-sft-0.5b")
@@ -72,7 +77,7 @@ def main():
     p.add_argument("--output", default="results/benchmark-math-sft.json")
     p.set_defaults(func=benchmark)
     args = parser.parse_args()
-    if args.cmd in ("chat", "serve") and args.model is None:
+    if args.cmd in ("chat", "serve") and args.model is None and not (args.cmd == "serve" and args.backend == "vllm"):
         args.model = "models/qwen-0.5b"
         automatic = args.cmd == "serve" or not (
             args.solve or args.tool_calculation or args.calculator_only or args.system_prompt_file

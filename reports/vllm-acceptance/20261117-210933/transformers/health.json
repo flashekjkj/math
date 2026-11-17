@@ -1,0 +1,9 @@
+{
+  "status": "ok",
+  "device": "cuda",
+  "model": "models/math-sft-0.5b",
+  "adapter": null,
+  "max_new_tokens": 192,
+  "vram_allocated_gb": 0.93,
+  "vram_total_gb": 4.0
+}
