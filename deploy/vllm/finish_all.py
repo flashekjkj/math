@@ -64,10 +64,29 @@ def measure(folder,label,port):
     return result
 
 
+def start_deployment(via_wsl=False, distro=None):
+    deploy=ROOT/'deploy/vllm'
+    if via_wsl:
+        wsl=['wsl']+(['--distribution',distro] if distro else [])
+        linux_root='/mnt/'+ROOT.drive[0].lower()+ROOT.as_posix()[2:]
+        subprocess.run(wsl+['--exec','bash',linux_root+'/deploy/vllm/start.sh'],check=True)
+        return
+    # Docker Desktop still uses its WSL2 backend; Ubuntu shell invocation is unnecessary.
+    if (deploy/'deployment-lock.json').exists():
+        subprocess.run([sys.executable,str(deploy/'freeze.py'),'--configure-local'],check=True)
+    else:
+        subprocess.run([sys.executable,str(deploy/'freeze.py')],check=True)
+    subprocess.run([sys.executable,str(deploy/'freeze.py'),'--verify'],check=True)
+    compose=['docker','compose','--env-file',str(deploy/'.env'),'-f',str(deploy/'compose.yaml')]
+    subprocess.run(compose+['config','--quiet'],check=True)
+    subprocess.run(compose+['up','-d'],check=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline-only',action='store_true')
-    parser.add_argument('--distro',help='WSL distribution name, otherwise default WSL distribution')
+    parser.add_argument('--via-wsl',action='store_true',help='Optional: run Compose through Ubuntu instead of Windows Docker CLI')
+    parser.add_argument('--distro',help='Distribution used only with --via-wsl')
     parser.add_argument('--resume',type=Path,help='Existing results folder with a completed baseline')
     args=parser.parse_args()
     if os.name!='nt' and not args.baseline_only:
@@ -121,7 +140,7 @@ def main():
         drive=ROOT.drive[0].lower()
         linux_root='/mnt/'+drive+ROOT.as_posix()[2:]
         save(folder/'run-status.json',dict(status='running',phase='vllm_start'))
-        subprocess.run(wsl+['--exec','bash',linux_root+'/deploy/vllm/start.sh'],check=True)
+        start_deployment(args.via_wsl,args.distro)
         require_free(8000)
         proc=launch(8000,True,folder)
         wait_ready(proc,8000)

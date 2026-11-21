@@ -1,0 +1,12 @@
+{
+  "status": "configured",
+  "backend": "vllm",
+  "device": "remote",
+  "model": "math-sft",
+  "chat_model": "math-sft",
+  "adapter": null,
+  "max_new_tokens": 192,
+  "vram_allocated_gb": null,
+  "vram_total_gb": null,
+  "note": "Remote configuration only; /ready probes upstream. GPU memory is not measured here."
+}

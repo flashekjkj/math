@@ -15,12 +15,5 @@
     "gained_confirmed_correct": 1,
     "n": 100,
     "accuracy_delta_pp": 1.0
-  },
-  "merged-sft-valid__dpo-demo-valid": {
-    "neither_confirmed_correct": 82,
-    "both_confirmed_correct": 18,
-    "response_changed": 6,
-    "n": 100,
-    "accuracy_delta_pp": 0.0
   }
 }

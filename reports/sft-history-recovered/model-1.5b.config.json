@@ -1,8 +1,8 @@
 {
-  "model_name_or_path": "models/qwen-0.5b",
-  "train_file_dir": "data/versions/relation-tool-v1/sft_train",
-  "validation_file_dir": "data/versions/relation-tool-v1/sft_valid",
-  "output_dir": "runs/relation-tool-v1",
+  "model_name_or_path": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\Qwen2.5-1.5B-Instruct",
+  "train_file_dir": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\data-2k",
+  "validation_file_dir": "E:\\desktop\\LLM_Project\\math-tutor\\data\\sft_valid",
+  "output_dir": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\sft-1.5b-2k",
   "do_train": true,
   "do_eval": true,
   "use_peft": true,
@@ -10,7 +10,7 @@
   "lora_rank": 8,
   "lora_alpha": 16,
   "lora_dropout": 0.05,
-  "model_max_length": 384,
+  "model_max_length": 256,
   "per_device_train_batch_size": 1,
   "per_device_eval_batch_size": 1,
   "gradient_accumulation_steps": 8,
@@ -31,5 +31,7 @@
   "save_total_limit": 2,
   "logging_steps": 5,
   "report_to": "tensorboard",
-  "seed": 42
+  "seed": 42,
+  "load_in_4bit": true,
+  "qlora": true
 }

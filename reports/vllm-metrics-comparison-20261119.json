@@ -1,0 +1,92 @@
+{
+  "deployment_status": "verified_from_completed_run_and_live_gateway_ready",
+  "runtime": {
+    "captured_at": "2026-11-19T02:07:44.143499+00:00",
+    "image": "vllm/vllm-openai@sha256:20fdb089454afbb324efa4110a2c025ff7b27cc1a086e07aa580b18df8ad1ce1",
+    "image_id": "sha256:20fdb089454afbb324efa4110a2c025ff7b27cc1a086e07aa580b18df8ad1ce1",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU, 592.82, 4096 MiB",
+    "versions": {
+      "torch": "2.14.0+cu130",
+      "cuda": "13.0",
+      "vllm": "0.34.0"
+    },
+    "model_manifest": "model-manifest.json",
+    "compose_sha256": "0b2f1d30a8949b5a26579a712ab0facad762d855df11aed357805bfd02bc481c"
+  },
+  "comparison": [
+    {
+      "concurrency": 1,
+      "throughput_speedup": 4.507710983346786,
+      "transformers": {
+        "output_tokens_per_second": 10.811855561967521,
+        "ttft_proxy_p50_ms": 90.73635000095237,
+        "estimated_tpot_p50_ms": 93.87051250007517,
+        "requests": 12,
+        "failures": 0
+      },
+      "vllm": {
+        "output_tokens_per_second": 48.736720067040025,
+        "ttft_proxy_p50_ms": 79.92274999992333,
+        "estimated_tpot_p50_ms": 16.779990277764036,
+        "requests": 12,
+        "failures": 0
+      }
+    },
+    {
+      "concurrency": 2,
+      "throughput_speedup": 5.727167744982168,
+      "transformers": {
+        "output_tokens_per_second": 9.782610606767012,
+        "ttft_proxy_p50_ms": 1861.3839499994356,
+        "estimated_tpot_p50_ms": 103.75946145824047,
+        "requests": 12,
+        "failures": 0
+      },
+      "vllm": {
+        "output_tokens_per_second": 56.02665192879647,
+        "ttft_proxy_p50_ms": 344.3987499999821,
+        "estimated_tpot_p50_ms": 16.23931902175558,
+        "requests": 12,
+        "failures": 0
+      }
+    },
+    {
+      "concurrency": 4,
+      "throughput_speedup": 4.8851461998246775,
+      "transformers": {
+        "output_tokens_per_second": 11.094206050887966,
+        "ttft_proxy_p50_ms": 4832.445849999203,
+        "estimated_tpot_p50_ms": 90.03899479174984,
+        "requests": 12,
+        "failures": 0
+      },
+      "vllm": {
+        "output_tokens_per_second": 54.19681852956729,
+        "ttft_proxy_p50_ms": 956.8354999998974,
+        "estimated_tpot_p50_ms": 16.899926136368684,
+        "requests": 12,
+        "failures": 0
+      }
+    }
+  ],
+  "quality": {
+    "transformers_accuracy": 0.18,
+    "vllm_accuracy": 0.18,
+    "gains": 0,
+    "regressions": 0,
+    "changed_responses": 2
+  },
+  "memory": {
+    "transformers_historical_single_snapshot_mib": 3094,
+    "transformers_framework_allocated_gib": 0.93,
+    "vllm_current_sampled_whole_gpu_peak_mib": 2040,
+    "vllm_sample_count": 39,
+    "comparable_peak_memory": false
+  },
+  "caveats": [
+    "TTFT is first nonempty content chunk latency, not an exact token timestamp.",
+    "TPOT estimate=(SSE completion latency - first content latency)/(retokenized output token count - 1); includes stream completion overhead, first chunk may contain multiple tokens.",
+    "Memory values are different-time whole-GPU observations, not comparable process peaks.",
+    "Different days and software stacks; 12 requests per level; single active sequence in vLLM; no production or pure-engine causal claim."
+  ]
+}

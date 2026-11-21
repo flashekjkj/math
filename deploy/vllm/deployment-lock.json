@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-11-19T02:07:44.143499+00:00",
+  "image": "vllm/vllm-openai@sha256:20fdb089454afbb324efa4110a2c025ff7b27cc1a086e07aa580b18df8ad1ce1",
+  "image_id": "sha256:20fdb089454afbb324efa4110a2c025ff7b27cc1a086e07aa580b18df8ad1ce1",
+  "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU, 592.82, 4096 MiB",
+  "versions": {
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "vllm": "0.34.0"
+  },
+  "model_manifest": "model-manifest.json",
+  "compose_sha256": "0b2f1d30a8949b5a26579a712ab0facad762d855df11aed357805bfd02bc481c"
+}

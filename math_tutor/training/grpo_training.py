@@ -39,12 +39,9 @@ def main():
     set_seed(cfg.seed)
     out = Path(cfg.output_dir)
     model_path = Path(args.model_name_or_path).resolve()
-    dpo = json.loads((ROOT/'runs/dpo-demo-v1/run_config.json').read_text(encoding='utf-8-sig'))
-    if model_path != Path(dpo['model_name_or_path']).resolve():
-        raise ValueError('GRPO must start from the same SFT model as DPO')
     files = sorted(p for p in model_path.iterdir() if p.is_file())
     hashes = {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
-    dump(out/'base_model_manifest.json', {'model':str(model_path),'sha256':hashes,'dpo_run':'runs/dpo-demo-v1'})
+    dump(out/'base_model_manifest.json', {'model':str(model_path),'sha256':hashes})
     train = load_rows(args.train_file_dir, args.max_train_samples)
     valid = load_rows(args.validation_file_dir, args.max_eval_samples)
     if {r['family_id'] for r in train} & {r['family_id'] for r in valid}:

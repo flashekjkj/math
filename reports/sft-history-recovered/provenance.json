@@ -1,0 +1,117 @@
+{
+  "recovered_on": "2026-11-20",
+  "current_test_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "files": [
+    {
+      "file": "ablation-comparison.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\comparison.json",
+      "sha256": "830e11a62007df3587217f1ffbb68fe9c05b9fbb800c5b26522d69fc15c48e50"
+    },
+    {
+      "file": "model-scale-comparison.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\results\\comparison-0.5b-vs-1.5b.json",
+      "sha256": "29dbad4daade24dd8a3e29a6d9d17f5e3e4c9288792bd559d8f0865396c9fbe0"
+    },
+    {
+      "file": "api-summary.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\deepseek-v4.1-flash-test\\summary.json",
+      "sha256": "3df7390600bc236ca1722130d907c4a53d16c89360a262bf61c1dcd6d5057928"
+    },
+    {
+      "file": "api-predictions.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\deepseek-v4.1-flash-test\\predictions.jsonl",
+      "sha256": "8d7053e729ea873c1ddb93d026f2d26a0345b05cd0257a6b4bd20f7d68facb1f"
+    },
+    {
+      "file": "data-2k.summary.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-data-2k-raw.summary.json",
+      "sha256": "1a50533fa072be75774d9cf1f1bcf87ed6c67857f25845190363fc4f1086ca7a"
+    },
+    {
+      "file": "epochs-2.summary.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-epochs-2-raw.summary.json",
+      "sha256": "73e63d713cc92842692561075a9fa690d76f04c69cc778e99674d55f1e331774"
+    },
+    {
+      "file": "model-1.5b.summary.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\results\\sft-1.5b-raw.summary.json",
+      "sha256": "57d91eaff07800b1cddd1a92d1445e75dd421a9d15551106e5a1bea0245975ad"
+    },
+    {
+      "file": "data-2k.config.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-data-2k\\run_config.json",
+      "sha256": "b3da4a401fe8c34a794321053945564d5e4115bf1909fe92de06a95a1c4e4f7d"
+    },
+    {
+      "file": "epochs-2.config.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-epochs-2\\run_config.json",
+      "sha256": "0afff5c5ee1ab3092a307661cecdd2e570753e65561937e81fe567368cf47b29"
+    },
+    {
+      "file": "model-1.5b.config.json",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\sft-1.5b-2k\\run_config.json",
+      "sha256": "b981122e23365662df31cd37f41f56bc5abddfa6fcfecfd21cf71e6ea3bffc99"
+    },
+    {
+      "file": "data-2k.raw.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-data-2k-raw.jsonl",
+      "sha256": "12d8fb7101743a223e4dbb23024961d67aaf35ada63fa6f9fbdcd6f7c2a653ee"
+    },
+    {
+      "file": "epochs-2.raw.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-epochs-2-raw.jsonl",
+      "sha256": "ea46bfa3dc0814059485211a4104116db0d6e2349666f483671164df7f66cc94"
+    },
+    {
+      "file": "model-1.5b.raw.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\results\\sft-1.5b-raw.jsonl",
+      "sha256": "b2b4e0e95931dfbbf4d72cd4fb30876d764cf8af4b2a245105e664819cd77fc9"
+    },
+    {
+      "file": "data-2k.calculator.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-data-2k-calculator.jsonl",
+      "sha256": "1a254a10c8888d94dd22754ceab16419ba5e8dd95ee8fe6e56e5b1415c2fc386"
+    },
+    {
+      "file": "epochs-2.calculator.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\results\\sft-epochs-2-calculator.jsonl",
+      "sha256": "ae7a6c162333525b759f3a37da72180261b5bb18ff397b64ae94fcd4203696dc"
+    },
+    {
+      "file": "model-1.5b.calculator.jsonl",
+      "source": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\results\\sft-1.5b-calculator.jsonl",
+      "sha256": "a35b1d678558f2314bb0dd65ffd2e8d3f161f3d3405ee1304af386c3fb612c02"
+    }
+  ],
+  "checks": [
+    {
+      "experiment": "data-2k",
+      "n": 200,
+      "raw_correct": 46,
+      "calculator_correct": 100,
+      "ids_questions_references_match": true
+    },
+    {
+      "experiment": "epochs-2",
+      "n": 200,
+      "raw_correct": 44,
+      "calculator_correct": 97,
+      "ids_questions_references_match": true
+    },
+    {
+      "experiment": "model-1.5b",
+      "n": 200,
+      "raw_correct": 58,
+      "calculator_correct": 101,
+      "ids_questions_references_match": true
+    },
+    {
+      "experiment": "api",
+      "n": 200,
+      "raw_correct": 168,
+      "calculator_correct": null,
+      "ids_questions_references_match": true
+    }
+  ],
+  "note": "Read existing artifacts only. No training, inference or paid API requests. Model weights and original training environments were not revalidated."
+}

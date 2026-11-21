@@ -1,0 +1,35 @@
+{
+  "runs": [
+    {
+      "file": "work\\multiturn-initial-rejected-batch\\usage.json",
+      "accounted_tokens": 80086,
+      "pending": 0,
+      "actual_returned_usage_tokens": 65086,
+      "models": {
+        "qwen3.8-flash": 129
+      },
+      "interrupted_unknown": 3
+    },
+    {
+      "file": "data\\versions\\multiturn-v1\\usage.json",
+      "accounted_tokens": 670697,
+      "pending": 0,
+      "actual_returned_usage_tokens": 605697,
+      "models": {
+        "qwen3.8-flash": 1120
+      }
+    },
+    {
+      "file": "data\\versions\\multiturn-v1\\context-audit\\usage.json",
+      "accounted_tokens": 114090,
+      "pending": 0,
+      "actual_returned_usage_tokens": 109090,
+      "models": {
+        "qwen3.8-flash": 66
+      }
+    }
+  ],
+  "note": "Includes initial discarded candidates and unknown-request reserves. API account quota/billing not queried. Same-model independent requests are not human annotation.",
+  "total_returned_usage_tokens": 779873,
+  "total_accounted_with_reserves": 864873
+}

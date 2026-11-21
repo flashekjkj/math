@@ -1,6 +1,5 @@
 import unittest
 from math_tutor.inference.calculator import execute
-from math_tutor.data.build_relation_tool import relation
 
 class CalculatorTests(unittest.TestCase):
     def test_valid(self):
@@ -15,7 +14,5 @@ class CalculatorTests(unittest.TestCase):
             self.assertFalse(execute('列式：'+eq,False)['ok'])
     def test_wrong_formula_not_repaired(self):
         self.assertEqual(execute('列式：2+4',False)['value'],6)
-    def test_relation(self):
-        self.assertIn('商',relation('45/(3/5)'))
     def test_preserve_analysis(self):
         self.assertTrue(execute('分析：先求单价，再求总价。\n列式：18/3*2',False)['response'].startswith('分析：'))

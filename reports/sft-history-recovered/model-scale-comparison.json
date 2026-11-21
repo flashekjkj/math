@@ -1,0 +1,41 @@
+{
+  "test_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "n": 200,
+  "model": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\Qwen2.5-1.5B-Instruct",
+  "adapter": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\qwen25-15b-qlora\\sft-1.5b-2k",
+  "train_rows": 2000,
+  "epochs": 1.0,
+  "optimizer_steps": 250,
+  "train_precision": "4-bit NF4 QLoRA with FP16 compute",
+  "inference_precision": "FP16",
+  "final_validation_loss": 0.2713092565536499,
+  "final_train_loss": 0.3697092065811157,
+  "train_runtime_seconds": 1181.6247,
+  "raw_correct": 58,
+  "raw_accuracy": 0.29,
+  "executable": 160,
+  "calculator_correct": 101,
+  "calculator_accuracy": 0.505,
+  "previous_same_data_0_5b": {
+    "calculator_correct": 100,
+    "calculator_accuracy": 0.5,
+    "final_validation_loss": 0.32675689458847046,
+    "training_precision": "FP16 LoRA"
+  },
+  "paired_comparisons": {
+    "original": {
+      "wrong_to_right": 33,
+      "right_to_wrong": 27,
+      "delta_correct": 6,
+      "delta_percentage_points": 3.0,
+      "exact_mcnemar_two_sided_p": 0.5189580031896518
+    },
+    "sft-data-2k": {
+      "wrong_to_right": 31,
+      "right_to_wrong": 30,
+      "delta_correct": 1,
+      "delta_percentage_points": 0.5,
+      "exact_mcnemar_two_sided_p": 1.0
+    }
+  }
+}

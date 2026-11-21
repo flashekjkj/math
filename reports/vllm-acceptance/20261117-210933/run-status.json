@@ -1,4 +1,6 @@
 {
-  "status": "failed",
-  "error": "Stop existing GPU containers before full acceptance: math-tutor-vllm"
+  "status": "complete",
+  "gateway_pid": 29924,
+  "webpage": "http://127.0.0.1:8000",
+  "evidence": "E:\\desktop\\LLM_Project\\math-tutor\\reports\\vllm-acceptance\\20261117-210933"
 }

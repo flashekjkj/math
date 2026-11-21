@@ -11,7 +11,7 @@ from math_tutor.inference.calculator import TOOL_SYSTEM,execute
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model',default='models/qwen-0.5b')
-    p.add_argument('--adapter',default='runs/relation-tool-v1')
+    p.add_argument('--adapter',default=None)
     p.add_argument('--no-adapter',action='store_true',help='For a merged standalone model')
     p.add_argument('--data',default='data/processed/test.jsonl')
     p.add_argument('--output',required=True)

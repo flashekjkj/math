@@ -1,0 +1,8 @@
+{
+  "captured_at": "2026-11-19T02:44:37.202864+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "memory_sampled_peak_mib": 2040,
+  "sample_count": 39,
+  "memory_note": "Whole GPU, includes display/other processes. Sampled peak, not exact instantaneous or per-process peak.",
+  "timing_note": "First content is a TTFT proxy. TPOT estimates use (end-to-end latency - first content latency)/(retokenized output tokens - 1), not engine token timestamps."
+}

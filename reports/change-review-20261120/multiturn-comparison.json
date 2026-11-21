@@ -1,0 +1,114 @@
+{
+  "suite_sha256": "57bd4dec9c16955604166c5ca860a6e3c127cc21b4daa63fd380061f33c8c9b4",
+  "models": {
+    "multiturn-base-v1": {
+      "model": "models/qwen-0.5b",
+      "adapter": null,
+      "episodes": 24,
+      "turns": 72,
+      "episode_all_checks_pass": 6,
+      "turn_heuristic_pass": {
+        "condition_change": {
+          "pass": 12,
+          "total": 18,
+          "rate": 0.6666666666666666
+        },
+        "hint": {
+          "pass": 2,
+          "total": 18,
+          "rate": 0.1111111111111111
+        },
+        "correction": {
+          "pass": 12,
+          "total": 18,
+          "rate": 0.6666666666666666
+        },
+        "chat_memory": {
+          "pass": 18,
+          "total": 18,
+          "rate": 1.0
+        }
+      },
+      "do_sample": false,
+      "max_new_tokens": 128,
+      "system_prompt": "你是中文数学辅导助手。结合上下文自然、简洁地回答。闲聊时正常交流，不强套解题格式；解题时说明关键数量关系，给出列式和答案。用户只要提示时只给提示，不泄露答案；条件不足先询问。用户修改条件后按新条件推理。不编造条件，不迎合错误结论。",
+      "suite_sha256": "57bd4dec9c16955604166c5ca860a6e3c127cc21b4daa63fd380061f33c8c9b4",
+      "adapter_sha256": null,
+      "seconds": 152.96899999999914,
+      "limitations": "Closed-loop histories contain each model own outputs. Keyword/number heuristics only; not semantic or teaching quality scores. Small authored regression suite, no claim of blind generalization."
+    },
+    "multiturn-old-sft-v1": {
+      "model": "models/qwen-0.5b",
+      "adapter": "runs/local-sft-v1",
+      "episodes": 24,
+      "turns": 72,
+      "episode_all_checks_pass": 9,
+      "turn_heuristic_pass": {
+        "condition_change": {
+          "pass": 13,
+          "total": 18,
+          "rate": 0.7222222222222222
+        },
+        "hint": {
+          "pass": 3,
+          "total": 18,
+          "rate": 0.16666666666666666
+        },
+        "correction": {
+          "pass": 11,
+          "total": 18,
+          "rate": 0.6111111111111112
+        },
+        "chat_memory": {
+          "pass": 18,
+          "total": 18,
+          "rate": 1.0
+        }
+      },
+      "do_sample": false,
+      "max_new_tokens": 128,
+      "system_prompt": "你是中文数学辅导助手。结合上下文自然、简洁地回答。闲聊时正常交流，不强套解题格式；解题时说明关键数量关系，给出列式和答案。用户只要提示时只给提示，不泄露答案；条件不足先询问。用户修改条件后按新条件推理。不编造条件，不迎合错误结论。",
+      "suite_sha256": "57bd4dec9c16955604166c5ca860a6e3c127cc21b4daa63fd380061f33c8c9b4",
+      "adapter_sha256": "730b799bc90aab0069d1d160eab90c62f0ad8bd185f81bd2782f7194e222dd84",
+      "seconds": 164.5,
+      "limitations": "Closed-loop histories contain each model own outputs. Keyword/number heuristics only; not semantic or teaching quality scores. Small authored regression suite, no claim of blind generalization."
+    },
+    "multiturn-sft-v1": {
+      "model": "models/qwen-0.5b",
+      "adapter": "runs/multiturn-sft-v1",
+      "episodes": 24,
+      "turns": 72,
+      "episode_all_checks_pass": 8,
+      "turn_heuristic_pass": {
+        "condition_change": {
+          "pass": 11,
+          "total": 18,
+          "rate": 0.6111111111111112
+        },
+        "hint": {
+          "pass": 14,
+          "total": 18,
+          "rate": 0.7777777777777778
+        },
+        "correction": {
+          "pass": 8,
+          "total": 18,
+          "rate": 0.4444444444444444
+        },
+        "chat_memory": {
+          "pass": 18,
+          "total": 18,
+          "rate": 1.0
+        }
+      },
+      "do_sample": false,
+      "max_new_tokens": 128,
+      "system_prompt": "你是中文数学辅导助手。结合上下文自然、简洁地回答。闲聊时正常交流，不强套解题格式；解题时说明关键数量关系，给出列式和答案。用户只要提示时只给提示，不泄露答案；条件不足先询问。用户修改条件后按新条件推理。不编造条件，不迎合错误结论。",
+      "suite_sha256": "57bd4dec9c16955604166c5ca860a6e3c127cc21b4daa63fd380061f33c8c9b4",
+      "adapter_sha256": "5f8192eef386003f6f444d7f8fe1282fb4b9d77d9f8b1e14e44f9384a821dfcc",
+      "seconds": 81.89099999999962,
+      "limitations": "Closed-loop histories contain each model own outputs. Keyword/number heuristics only; not semantic or teaching quality scores. Small authored regression suite, no claim of blind generalization."
+    }
+  },
+  "limitations": "Proxy checks only. Whole episode pass depends on exact-format and keyword heuristics, not semantic mathematical correctness. One seed, small fixed suite; no broad significance claims."
+}

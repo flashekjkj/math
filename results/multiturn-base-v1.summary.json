@@ -1,0 +1,36 @@
+{
+  "model": "models/qwen-0.5b",
+  "adapter": null,
+  "episodes": 24,
+  "turns": 72,
+  "episode_all_checks_pass": 6,
+  "turn_heuristic_pass": {
+    "condition_change": {
+      "pass": 12,
+      "total": 18,
+      "rate": 0.6666666666666666
+    },
+    "hint": {
+      "pass": 2,
+      "total": 18,
+      "rate": 0.1111111111111111
+    },
+    "correction": {
+      "pass": 12,
+      "total": 18,
+      "rate": 0.6666666666666666
+    },
+    "chat_memory": {
+      "pass": 18,
+      "total": 18,
+      "rate": 1.0
+    }
+  },
+  "do_sample": false,
+  "max_new_tokens": 128,
+  "system_prompt": "你是中文数学辅导助手。结合上下文自然、简洁地回答。闲聊时正常交流，不强套解题格式；解题时说明关键数量关系，给出列式和答案。用户只要提示时只给提示，不泄露答案；条件不足先询问。用户修改条件后按新条件推理。不编造条件，不迎合错误结论。",
+  "suite_sha256": "57bd4dec9c16955604166c5ca860a6e3c127cc21b4daa63fd380061f33c8c9b4",
+  "adapter_sha256": null,
+  "seconds": 152.96899999999914,
+  "limitations": "Closed-loop histories contain each model own outputs. Keyword/number heuristics only; not semantic or teaching quality scores. Small authored regression suite, no claim of blind generalization."
+}

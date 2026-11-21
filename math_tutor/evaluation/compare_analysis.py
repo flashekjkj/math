@@ -5,7 +5,7 @@ from math_tutor.common import ROOT,read_records,dump
 
 def main():
     paths={'old_sft_raw':'results/sft-test.jsonl','old_sft_calculator':'results/old-sft-calculator-test.jsonl',
-           'mechanical_relation_tool':'results/relation-tool-test.jsonl','teacher_analysis_calculator':'results/analysis-sft-test.jsonl'}
+           'teacher_analysis_calculator':'results/analysis-sft-test.jsonl'}
     groups={name:read_records(ROOT/path) for name,path in paths.items()}
     indexed={name:{r['id']:r for r in rows} for name,rows in groups.items()}
     reference=indexed['old_sft_raw'];n=len(reference)

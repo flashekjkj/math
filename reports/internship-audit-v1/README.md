@@ -60,17 +60,6 @@
 }
 ```
 
-## merged-sft-valid → dpo-demo-valid
-
-```json
-{
-  "neither_confirmed_correct": 82,
-  "both_confirmed_correct": 18,
-  "response_changed": 6,
-  "n": 100,
-  "accuracy_delta_pp": 0.0
-}
-```
 
 ## 解释边界
 

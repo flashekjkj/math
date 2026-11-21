@@ -1,0 +1,27 @@
+{
+  "math_ids": [
+    "test:4961",
+    "test:5846",
+    "test:16758",
+    "test:13381",
+    "test:17849",
+    "test:6096"
+  ],
+  "dpo_ids": [
+    "train:14320",
+    "train:6113",
+    "train:14715",
+    "train:8951",
+    "train:15587",
+    "train:3752"
+  ],
+  "multi": {
+    "id": "hint-1",
+    "users": [
+      "松果社有5箱贴纸，每箱12张，共有多少张？先别告诉我答案，只给一个提示。",
+      "我该用加法还是乘法？仍然不要告诉我最后得数。",
+      "现在可以公布答案，请计算。"
+    ]
+  },
+  "selection": "Retrospectively selected from historical gains / hint regression examples, before this re-run. All selected candidates and all rerun outputs retained. Not a random test or aggregate improvement claim."
+}

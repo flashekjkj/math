@@ -1,4 +1,4 @@
-"""Run from WSL: python3 deploy/vllm/freeze.py. Uses downloaded image only."""
+"""Capture a downloaded Docker image from Windows or WSL; no image download."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -34,11 +34,12 @@ def main():
     parser.add_argument('--image', default='vllm/vllm-openai:latest')
     parser.add_argument('--refresh', action='store_true', help='Explicitly replace previous image lock')
     parser.add_argument('--model-only', action='store_true')
+    parser.add_argument('--configure-local', action='store_true', help='Regenerate local mount settings from an existing trusted lock')
     parser.add_argument('--verify', action='store_true', help='Check model/config hashes against the saved lock')
     args = parser.parse_args()
     manifest = model_manifest()
     manifest_path = HERE / 'model-manifest.json'
-    if args.verify:
+    if args.verify or args.configure_local:
         record = json.loads((HERE / 'deployment-lock.json').read_text(encoding='utf-8'))
         saved = json.loads(manifest_path.read_text(encoding='utf-8'))
         if manifest != saved:
@@ -46,7 +47,11 @@ def main():
         config_sha = hashlib.sha256((HERE / 'compose.yaml').read_bytes()).hexdigest()
         if config_sha != record['compose_sha256']:
             raise SystemExit('Compose configuration changed since capture. Review before refreshing the lock.')
-        expected_env = 'VLLM_IMAGE=' + record['image'] + '\nPROJECT_DIR=' + str(ROOT) + '\n'
+        expected_env = 'VLLM_IMAGE=' + record['image'] + '\nPROJECT_DIR=' + ROOT.as_posix() + '\n'
+        if args.configure_local:
+            (HERE / '.env').write_bytes(expected_env.encode('utf-8'))
+            print('Local mount settings regenerated; pinned image unchanged.')
+            return
         if (HERE / '.env').read_text(encoding='utf-8') != expected_env:
             raise SystemExit('Local .env does not match the saved image/path lock.')
         print('Model/config/image settings match the saved deployment lock.')
@@ -74,8 +79,8 @@ def main():
                   compose_sha256=hashlib.sha256((HERE / 'compose.yaml').read_bytes()).hexdigest())
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     lock.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding='utf-8')
-    # WSL absolute path is captured on the machine actually running Docker.
-    (HERE / '.env').write_text('VLLM_IMAGE=' + digests[0] + '\nPROJECT_DIR=' + str(ROOT) + '\n', encoding='utf-8')
+    # Compose accepts Windows E:/... or WSL /mnt/e/... paths; use forward slashes.
+    (HERE / '.env').write_text('VLLM_IMAGE=' + digests[0] + '\nPROJECT_DIR=' + ROOT.as_posix() + '\n', encoding='utf-8')
     print('Pinned deployment saved: ' + str(lock))
 
 

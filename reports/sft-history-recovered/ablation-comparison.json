@@ -1,0 +1,144 @@
+{
+  "test_path": "E:\\desktop\\LLM_Project\\math-tutor\\data\\processed\\test.jsonl",
+  "test_sha256": "c3912039bc8ca9a7f51b44cf9d06811638cc032b588ecc434487707f933f3036",
+  "validation_rows": 100,
+  "test_rows": 200,
+  "system_prompt": "你是中文数学学习助手。请根据题意列出计算式并计算，不要编造条件。最后一行以“答案：”开头，后面填写计算出的数字，例如“答案：192”。不要照抄“数值”两个字。",
+  "max_new_tokens": 192,
+  "do_sample": false,
+  "calculator": "exactly one formula, numeric tolerance rel=abs=1e-5",
+  "runs": {
+    "baseline": {
+      "adapter": "E:\\desktop\\LLM_Project\\math-tutor\\runs\\local-sft-v1",
+      "config": "E:\\desktop\\LLM_Project\\math-tutor\\runs\\local-sft-v1\\run_config.json",
+      "train_rows": 1000,
+      "epochs": 1,
+      "optimizer_steps": 125,
+      "train_runtime_seconds": 322.309,
+      "final_validation_loss": 0.3625665009021759,
+      "validation_loss_history": [
+        {
+          "step": 50,
+          "loss": 0.3938891887664795
+        },
+        {
+          "step": 100,
+          "loss": 0.3662051260471344
+        },
+        {
+          "step": 125,
+          "loss": 0.3624601364135742
+        }
+      ],
+      "n": 200,
+      "raw_correct": 48,
+      "executable": 195,
+      "calculator_correct": 95,
+      "calculator_accuracy": 0.475,
+      "raw_accuracy": 0.24
+    },
+    "sft-data-2k": {
+      "adapter": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-data-2k",
+      "config": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-data-2k\\run_config.json",
+      "train_rows": 2000,
+      "epochs": 1,
+      "optimizer_steps": 250,
+      "train_runtime_seconds": 1023.483,
+      "final_validation_loss": 0.32675689458847046,
+      "validation_loss_history": [
+        {
+          "step": 50,
+          "loss": 0.38821926712989807
+        },
+        {
+          "step": 100,
+          "loss": 0.35355502367019653
+        },
+        {
+          "step": 150,
+          "loss": 0.3385137915611267
+        },
+        {
+          "step": 200,
+          "loss": 0.3301237225532532
+        },
+        {
+          "step": 250,
+          "loss": 0.32689568400382996
+        }
+      ],
+      "n": 200,
+      "raw_correct": 46,
+      "executable": 199,
+      "calculator_correct": 100,
+      "calculator_accuracy": 0.5,
+      "raw_accuracy": 0.23
+    },
+    "sft-epochs-2": {
+      "adapter": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-epochs-2",
+      "config": "F:\\codex_content\\2026-10-26\\agent-2\\outputs\\sft-ablation-2x\\sft-epochs-2\\run_config.json",
+      "train_rows": 1000,
+      "epochs": 2,
+      "optimizer_steps": 250,
+      "train_runtime_seconds": 1047.9189,
+      "final_validation_loss": 0.3271527588367462,
+      "validation_loss_history": [
+        {
+          "step": 50,
+          "loss": 0.38591817021369934
+        },
+        {
+          "step": 100,
+          "loss": 0.35266807675361633
+        },
+        {
+          "step": 150,
+          "loss": 0.33878326416015625
+        },
+        {
+          "step": 200,
+          "loss": 0.32832732796669006
+        },
+        {
+          "step": 250,
+          "loss": 0.32727980613708496
+        }
+      ],
+      "n": 200,
+      "raw_correct": 44,
+      "executable": 197,
+      "calculator_correct": 97,
+      "calculator_accuracy": 0.485,
+      "raw_accuracy": 0.22
+    }
+  },
+  "paired_comparisons": [
+    {
+      "before": "baseline",
+      "after": "sft-data-2k",
+      "wrong_to_right": 10,
+      "right_to_wrong": 5,
+      "delta_correct": 5,
+      "delta_percentage_points": 2.5,
+      "mcnemar_exact_two_sided_p": 0.3017578125
+    },
+    {
+      "before": "baseline",
+      "after": "sft-epochs-2",
+      "wrong_to_right": 11,
+      "right_to_wrong": 9,
+      "delta_correct": 2,
+      "delta_percentage_points": 1.0,
+      "mcnemar_exact_two_sided_p": 0.8238029479980469
+    },
+    {
+      "before": "sft-epochs-2",
+      "after": "sft-data-2k",
+      "wrong_to_right": 8,
+      "right_to_wrong": 5,
+      "delta_correct": 3,
+      "delta_percentage_points": 1.5,
+      "mcnemar_exact_two_sided_p": 0.5810546875
+    }
+  ]
+}

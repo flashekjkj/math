@@ -62,8 +62,7 @@ def main():
     out = ROOT / args.output
     if out.exists():
         raise SystemExit('Choose a new output directory; reports are never overwritten')
-    comparisons = [('base-test', 'sft-test'), ('sft-valid', 'merged-sft-valid'),
-                   ('merged-sft-valid', 'dpo-demo-valid')]
+    comparisons = [('base-test', 'sft-test'), ('sft-valid', 'merged-sft-valid')]
     evidence, queue, lines = {}, [], ['# 自动项目审计', '', '仅使用现有文件；没有重新推理或训练。', '']
     audit = data_audit(ROOT)
     dump(out / 'data_audit.json', audit)
@@ -87,7 +86,7 @@ def main():
         write_lines(out/f'{left}__{right}.changed.jsonl', changed)
         lines += [f'## {left} → {right}', '', '```json', json.dumps(stats, indent=2), '```', '']
     # Validation only: keep test-set errors away from preference-data construction.
-    valid = indexed(read_records(ROOT/'results/dpo-demo-valid.jsonl')) if (ROOT/'results/dpo-demo-valid.jsonl').exists() else {}
+    valid = indexed(read_records(ROOT/'results/merged-sft-valid.jsonl')) if (ROOT/'results/merged-sft-valid.jsonl').exists() else {}
     for row in sorted(valid.values(), key=lambda r: (r.get('correct') is True, r['id'])):
         queue.append(dict(id=row['id'], split='valid', question=row['question'], reference=row['reference'],
             response=row['response'], auto_status=row.get('status'), reviewed=False,

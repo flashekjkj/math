@@ -49,18 +49,16 @@ def load_split(directory, limit):
 
 
 def verify_start(model_path):
-    dpo = json.loads((ROOT / 'runs/dpo-demo-v1/run_config.json').read_text(encoding='utf-8-sig'))
     grpo = json.loads((ROOT / 'runs/grpo-v1/base_model_manifest.json').read_text(encoding='utf-8-sig'))
-    if any(Path(path).resolve() != model_path for path in (dpo['model_name_or_path'], grpo['model'])):
-        raise ValueError('PPO must use the same SFT path as DPO and GRPO')
+    if any(Path(path).resolve() != model_path for path in (grpo['model'],)):
+        raise ValueError('PPO must use the same SFT path as GRPO')
     hashes = {}
     for name, expected in grpo['sha256'].items():
         with (model_path / name).open('rb') as stream:
             hashes[name] = hashlib.file_digest(stream, 'sha256').hexdigest()
         if hashes[name] != expected:
             raise ValueError(f'SFT file changed since GRPO: {name}')
-    return {'model': str(model_path), 'sha256': hashes, 'dpo_path_verified': True,
-            'grpo_sha256_verified': True}
+    return {'model': str(model_path), 'sha256': hashes, 'grpo_sha256_verified': True}
 
 
 @torch.no_grad()

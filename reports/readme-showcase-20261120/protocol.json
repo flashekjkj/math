@@ -1,0 +1,44 @@
+{
+  "models": [
+    {
+      "name": "base",
+      "model": "models/qwen-0.5b",
+      "adapter": null,
+      "model_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+      "adapter_sha256": null
+    },
+    {
+      "name": "sft",
+      "model": "models/qwen-0.5b",
+      "adapter": "runs/local-sft-v1",
+      "model_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+      "adapter_sha256": "730b799bc90aab0069d1d160eab90c62f0ad8bd185f81bd2782f7194e222dd84"
+    },
+    {
+      "name": "analysis_sft",
+      "model": "models/math-analysis-0.5b",
+      "adapter": null,
+      "model_sha256": "ddcf9b928fe7120f03fd9d4f07cb211e066271bad4de278355540a0a2249679d",
+      "adapter_sha256": null
+    },
+    {
+      "name": "analysis_dpo",
+      "model": "models/math-analysis-0.5b",
+      "adapter": "runs/analysis-dpo-v1",
+      "model_sha256": "ddcf9b928fe7120f03fd9d4f07cb211e066271bad4de278355540a0a2249679d",
+      "adapter_sha256": "efede04e8bfc6a79d8c6852438731824908541b06a08b6fa724d96de2d184189"
+    },
+    {
+      "name": "multiturn_sft",
+      "model": "models/qwen-0.5b",
+      "adapter": "runs/multiturn-sft-v1",
+      "model_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+      "adapter_sha256": "5f8192eef386003f6f444d7f8fe1282fb4b9d77d9f8b1e14e44f9384a821dfcc"
+    }
+  ],
+  "do_sample": false,
+  "batch_size": 1,
+  "device": "RTX3050 Laptop 4GB",
+  "selection": "Selected illustrative cases, not a benchmark. No retraining or checkpoint selection. Raw text unedited. Numeric scoring does not prove reasoning correctness. Analysis cases use deterministic calculator.",
+  "outputs_sha256": "8d31dda8940fcbc77a0463c93cb4fa1c40148bf2afc920ac568fe1f6c0a46796"
+}

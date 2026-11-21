@@ -10,7 +10,7 @@ cd /d E:\desktop\LLM_Project\math-tutor
 python deploy/vllm/finish_all.py
 ```
 
-默认使用 WSL 的默认发行版，若默认不是 Ubuntu：添加 --distro 后接实际发行版名称（wsl --list --verbose 查询）。本脚本不会删除模型或训练产物，不会安装或下载镜像。
+默认通过 Windows Docker CLI 直接控制 Docker Desktop 的 WSL2 引擎，不再调用 Ubuntu Shell。只有显式添加 --via-wsl 时才通过 Ubuntu；此时可用 --distro 指定发行版。本脚本不会删除模型或训练产物，不会安装或下载镜像。
 
 执行前停止正在运行的 GPU 容器及训练任务，释放 4GB 显存；脚本检测到已有 GPU 容器会停止流程，不擅自终止其他任务。端口 8000、8002 已被占用时也会明确报错。
 
@@ -18,7 +18,7 @@ python deploy/vllm/finish_all.py
 
 1. 检查 Docker 控制通路。
 2. 启动 Transformers 合并 SFT 服务（8002），检查接口、跑验证集100题，再对相同12条请求测并发1/2/4；停止该进程释放显存。
-3. 使用 WSL 启动锁定摘要的 Compose vLLM 服务（8001），启动项目远程网关（8000）。
+3. 使用 Windows Docker CLI 启动锁定摘要的 Compose vLLM 服务（8001），启动项目远程网关（8000）。
 4. 在相同协议下检查普通/流式接口、验证集与性能，生成逐题对照和汇总。
 5. 成功时保留 vLLM 容器与远程网关，网页地址 http://127.0.0.1:8000 。
 
@@ -50,3 +50,15 @@ reports/vllm-acceptance/<时间戳>/：
 ## 当前执行限制
 
 助手执行环境的 WSL/Docker 命名管道访问被拒绝，不能直接申请可表示的文件路径解除。请在自己的普通 Windows Anaconda Prompt 运行上述命令。不要关闭系统安全设置、开放未鉴权Docker TCP端口或重新安装驱动来绕过。
+
+## 2026-11-19 修复
+
+start.sh/stop.sh 已转换为 UTF-8 无 BOM 的 LF 换行，增加 .gitattributes 与 .editorconfig 防止重新变成 CRLF。默认 Windows 编排流程直接调用 freeze.py 和 docker compose，绕开 Shell 换行差异。已有版本锁可使用 --configure-local 重新生成本机挂载路径，不刷新镜像摘要，且仍验证模型与配置一致。
+
+请在 Windows math 环境续跑：
+
+```powershell
+python deploy/vllm/finish_all.py --resume reports/vllm-acceptance/20261117-210933
+```
+
+已完成的 Transformers 100题与性能基线不重跑。此命令仍需你的终端能正常执行 docker info。

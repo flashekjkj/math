@@ -30,3 +30,6 @@ dist/
 
 # Local backups
 /archive/
+
+# Local scratch and interrupted data-generation batches
+/work/
